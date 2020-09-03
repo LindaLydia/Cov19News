@@ -3,4 +3,16 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="BLUE">#0000FF</color>
+
+    <color name="cardBackgroundColor">#DDF2FF</color> <!--light light blue-->
+    <color name="titleItemUnselColor">#000000</color>
+    <color name="titleItemSelColor">#5d5d5d</color>
+    <color name="abstractItemUnselColor">#5d5d5d</color>
+    <color name="btnItemColor">#928e8f</color>
+
+    <color name="bigShineColor">#ff6666</color>
+    <color name="smallShineColor">#cc9999</color>
+    <color name="keywordColor">#000000</color>
+
 </resources>

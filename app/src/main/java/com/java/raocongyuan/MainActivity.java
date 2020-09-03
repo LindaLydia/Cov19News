@@ -29,7 +29,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private TextView newsText,statisticsText,graphText,classificationText,expertText;
-    private Fragment newsFragemnt,statisticsFragment,graphFragement,classificationFragment,expertFragment;
+    private Fragment newsFragemnt,statisticsFragment,graphFragment,classificationFragment,expertFragment;
     private ImageView tabLine;
     private List<Fragment> fragmentList = new ArrayList<Fragment>();
     public int TOTAL_PAGE_COUNT;
@@ -75,14 +75,16 @@ public class MainActivity extends AppCompatActivity {
         //set all the fragments
         newsFragemnt = NewsListFragment.newInstance("Main","NewsList");
         statisticsFragment = StatisticsFragment.newInstance("Main","Statistics");
-        System.out.println(newsFragemnt);
+        graphFragment = GraphFragment.newInstance("Main","Graph");
+        classificationFragment = ClassificationFragment.newInstance("Main","Classification");
+        expertFragment = ExpertsFragment.newInstance("Main","Experts");
         //TODO:::prepare all the fragments and add them to the fragmentList
         //graphFragement,classificationFragment,expertFragment;
         fragmentList.add(newsFragemnt);
         fragmentList.add(statisticsFragment);
-        //fragmentList.add(graphFragement);
-        //fragmentList.add(classificationFragment);
-        //fragmentList.add(expertFragment);
+        fragmentList.add(graphFragment);
+        fragmentList.add(classificationFragment);
+        fragmentList.add(expertFragment);
         TOTAL_PAGE_COUNT = fragmentList.size();
 
         //install an adapter for the fragment pages

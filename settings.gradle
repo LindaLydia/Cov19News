@@ -1,2 +1,3 @@
 rootProject.name='Cov19News'
-include ':app'
+include ':app', ':shinebuttonlib_module'
+project(':shinebuttonlib_module').projectDir = new File('shinebuttonlib')
