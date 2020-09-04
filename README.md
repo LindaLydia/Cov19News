@@ -1,4 +1,4 @@
-# Cov19News
+# Cov19News——News Today
 A project for Java Course in Summer 2020
 
 
