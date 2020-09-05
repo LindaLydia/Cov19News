@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailNewsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical"
+        android:paddingTop="24dp">
+
+
+        <TextView
+            android:id="@+id/page_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/page_date_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="30dp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/page_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:lineSpacingExtra="3dp"
+            android:scrollbars="vertical"
+            android:textColor="@android:color/background_dark"
+            android:textSize="20sp" />
+
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            style="@style/Widget.MaterialComponents.BottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            app:backgroundTint="@android:color/white"
+            app:hideOnScroll="true"
+            tools:ignore="BottomAppBar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/page_bottom_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/imageview_placeholder"
+                    android:scaleType="centerInside"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:src="@drawable/ic_share" />
+
+                <com.sackcentury.shinebuttonlib.ShineButton
+                    android:id="@+id/page_bottom_star"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="centerInside"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="15dp"
+                    app:allow_random_color="false"
+                    app:big_shine_color="#FF6666"
+                    app:btn_color="@color/btnItemColor"
+                    app:btn_fill_color="@android:color/holo_orange_light"
+                    app:click_animation_duration="200"
+                    app:enable_flashing="true"
+                    app:shine_animation_duration="1500"
+                    app:shine_count="8"
+                    app:shine_distance_multiple="1.5"
+                    app:shine_turn_angle="30"
+                    app:siShape="@drawable/not_star"
+                    app:small_shine_color="#CC9999"
+                    app:small_shine_offset_angle="20" />
+
+            </LinearLayout>
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
