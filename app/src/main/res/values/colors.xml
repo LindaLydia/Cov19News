@@ -16,4 +16,8 @@
     <color name="keywordColor">#000000</color>
     <color name="color_icon_standard">#323232</color>
 
+    <color name="toggle_button_off">#75A3FF</color>
+    <color name="toggle_button_on">#6AB6FF</color>
+    <color name="toggle_button_pressed">#467CF6</color>
+
 </resources>

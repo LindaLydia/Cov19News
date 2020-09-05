@@ -14,18 +14,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="18dp"
         android:orientation="vertical">
+
+        <ToggleButton
+            android:id="@+id/area_switch_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector"
+            android:text="ToggleButton"
+            android:textOff="Domestic"
+            android:textOn="International" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/line_chart_for_trend"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="7dp"
             android:layout_above="@+id/seekBar1" />
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/chart1"
+            android:id="@+id/bar_char_for_total"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="7dp"
             android:layout_above="@+id/seekBar1" >
 
         </com.github.mikephil.charting.charts.BarChart>
