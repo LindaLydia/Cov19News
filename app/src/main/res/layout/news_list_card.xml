@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:textColor="@color/titleItemUnselColor"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:textColor="@color/abstractItemUnselColor"
-                android:textSize="20sp"/>
+                android:textSize="15sp"/>
 
 
         </LinearLayout>
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginHorizontal="20dp">
             <TextView
                 android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
                 android:textColor="@color/keywordColor"
                 android:height="40dp"
                 android:minWidth="90dp"
-                android:textSize="17sp"
+                android:textSize="12sp"
                 android:gravity="center"
                 android:paddingVertical="5dp"
                 android:paddingHorizontal="10dp"
@@ -108,14 +108,14 @@
                 </androidx.cardview.widget.CardView>-->
 
                 <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:contentDescription="@string/imageview_placeholder"
                     android:src="@drawable/ic_share"
                     android:background="?android:attr/selectableItemBackground"
                     android:id="@+id/item_share_button"
                     android:layout_toLeftOf="@+id/item_star_button"
-                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginHorizontal="20dp"
                     android:layout_marginVertical="5dp"
                     android:scaleType="centerInside"
                     />
@@ -132,8 +132,8 @@
                 <!--        />-->
                 <com.sackcentury.shinebuttonlib.ShineButton
                     android:id="@+id/item_star_button"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginVertical="5dp"
                     android:layout_marginRight="0dp"

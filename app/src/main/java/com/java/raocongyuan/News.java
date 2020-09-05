@@ -31,9 +31,9 @@ public class News implements Serializable {
     public News(String _title){
         id = String.valueOf(0);
         title = _title;
-        date = "";
-        time = "";
-        text = "";
+        date = "2020-yy-dd";
+        time = "hh:mm:ss";
+        text = _title+" "+_title+" "+_title+" "+_title+" "+_title+" "+_title;
         abstract_text = text;
         pictures = new ArrayList<URL>();
         read = false;
