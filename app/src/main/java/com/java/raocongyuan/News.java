@@ -10,6 +10,7 @@ public class News implements Serializable {
     private String title;//标题 "xxxxxxxxxxx"
     private String date;//日期 2020-yy-dd
     private String time;//时间 hh:mm:ss
+    private String source;
     private String text;//正文 "xxxxxxxxxxxxxxxxxxxx"
     private String abstract_text;//摘要 "xxxxx......"
     private List<URL> pictures;//图片, 默认第一个是列表中要展示的图（可以为空）
@@ -21,6 +22,7 @@ public class News implements Serializable {
         title = "这是一则测试新闻 index="+0;
         date = "";
         time = "";
+        source = "";
         text = "";
         abstract_text = text;
         pictures = new ArrayList<URL>();
@@ -33,6 +35,7 @@ public class News implements Serializable {
         title = _title;
         date = "2020-yy-dd";
         time = "hh:mm:ss";
+        source = "新华网";
         text = _title+" "+_title+" "+_title+" "+_title+" "+_title+" "+_title;
         abstract_text = text;
         pictures = new ArrayList<URL>();
@@ -45,6 +48,7 @@ public class News implements Serializable {
         title = "这是一则测试新闻 index="+0;
         date = "";
         time = "";
+        source = "新华网";
         text = "1、个人防护三要素：戴口罩、勤洗手、多通风！\n" +
                 "2、疫情就是命令，防控就是责任！\n" +
                 "3、加强联防联控，做好协同防范\n" +
@@ -96,6 +100,7 @@ public class News implements Serializable {
         title = "这是一则测试新闻 index="+index;
         date = "2020-01-23";
         time = "12:00:00";
+        source = "新华网";
         text = "武汉封城第一天，热干面加油。";
         abstract_text = text;
         pictures = new ArrayList<URL>();
@@ -113,7 +118,7 @@ public class News implements Serializable {
     }
 
     public String getDateAndTime(){
-        return (this.date+" "+this.time);
+        return (this.date+" "+this.time+"   "+this.source);
     }
 
     public String getText(){
