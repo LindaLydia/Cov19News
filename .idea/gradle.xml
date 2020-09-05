@@ -11,7 +11,35 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/glide/annotation" />
+            <option value="$PROJECT_DIR$/glide/annotation/compiler" />
+            <option value="$PROJECT_DIR$/glide/annotation/compiler/test" />
+            <option value="$PROJECT_DIR$/glide/instrumentation" />
+            <option value="$PROJECT_DIR$/glide/integration" />
+            <option value="$PROJECT_DIR$/glide/integration/concurrent" />
+            <option value="$PROJECT_DIR$/glide/integration/cronet" />
+            <option value="$PROJECT_DIR$/glide/integration/gifencoder" />
+            <option value="$PROJECT_DIR$/glide/integration/okhttp" />
+            <option value="$PROJECT_DIR$/glide/integration/okhttp3" />
+            <option value="$PROJECT_DIR$/glide/integration/recyclerview" />
+            <option value="$PROJECT_DIR$/glide/integration/volley" />
+            <option value="$PROJECT_DIR$/glide/library" />
+            <option value="$PROJECT_DIR$/glide/library/findbugs" />
+            <option value="$PROJECT_DIR$/glide/library/pmd" />
+            <option value="$PROJECT_DIR$/glide/library/test" />
+            <option value="$PROJECT_DIR$/glide/mocks" />
+            <option value="$PROJECT_DIR$/glide/samples/contacturi" />
+            <option value="$PROJECT_DIR$/glide/samples/flickr" />
+            <option value="$PROJECT_DIR$/glide/samples/gallery" />
+            <option value="$PROJECT_DIR$/glide/samples/giphy" />
+            <option value="$PROJECT_DIR$/glide/samples/imgur" />
+            <option value="$PROJECT_DIR$/glide/samples/svg" />
+            <option value="$PROJECT_DIR$/glide/testutil" />
+            <option value="$PROJECT_DIR$/glide/third_party/disklrucache" />
+            <option value="$PROJECT_DIR$/glide/third_party/gif_decoder" />
+            <option value="$PROJECT_DIR$/samples" />
             <option value="$PROJECT_DIR$/shinebuttonlib" />
+            <option value="$PROJECT_DIR$/third_party" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

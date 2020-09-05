@@ -14,5 +14,6 @@
     <color name="bigShineColor">#ff6666</color>
     <color name="smallShineColor">#cc9999</color>
     <color name="keywordColor">#000000</color>
+    <color name="color_icon_standard">#323232</color>
 
 </resources>

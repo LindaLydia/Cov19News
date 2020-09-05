@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 //import android.support.v4.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
@@ -17,6 +18,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int tabLineWidth;
     private int currentPage = 0;
+    private FragmentStatePagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         TOTAL_PAGE_COUNT = fragmentList.size();
 
         //install an adapter for the fragment pages
-        FragmentPagerAdapter adapter = new FragmentPagerAdapter( getSupportFragmentManager() ) { //getSupportFragmentManager()
+        adapter = new FragmentStatePagerAdapter( getSupportFragmentManager() ) { //getSupportFragmentManager()
             @NonNull
             @Override
             public Fragment getItem(int position) {
@@ -101,6 +104,66 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         viewPager.setAdapter(adapter);
+        newsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newsText.setTextColor(Color.BLUE);
+                statisticsText.setTextColor(Color.BLACK);
+                graphText.setTextColor(Color.BLACK);
+                classificationText.setTextColor(Color.BLACK);
+                expertText.setTextColor(Color.BLACK);
+                //adapter.getItem(0);
+                //TODO::front::whether the above works
+            }
+        });
+        statisticsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newsText.setTextColor(Color.BLACK);
+                statisticsText.setTextColor(Color.BLUE);
+                graphText.setTextColor(Color.BLACK);
+                classificationText.setTextColor(Color.BLACK);
+                expertText.setTextColor(Color.BLACK);
+                //adapter.getItem(1);
+                //TODO::front::whether the above works
+            }
+        });
+        graphText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newsText.setTextColor(Color.BLACK);
+                statisticsText.setTextColor(Color.BLACK);
+                graphText.setTextColor(Color.BLUE);
+                classificationText.setTextColor(Color.BLACK);
+                expertText.setTextColor(Color.BLACK);
+                //adapter.getItem(2);
+                //TODO::front::whether the above works
+            }
+        });
+        classificationText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newsText.setTextColor(Color.BLACK);
+                statisticsText.setTextColor(Color.BLACK);
+                graphText.setTextColor(Color.BLACK);
+                classificationText.setTextColor(Color.BLUE);
+                expertText.setTextColor(Color.BLACK);
+                //adapter.getItem(3);
+                //TODO::front::whether the above works
+            }
+        });
+        expertText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newsText.setTextColor(Color.BLACK);
+                statisticsText.setTextColor(Color.BLACK);
+                graphText.setTextColor(Color.BLACK);
+                classificationText.setTextColor(Color.BLACK);
+                expertText.setTextColor(Color.BLUE);
+                //adapter.getItem(4);
+                //TODO::front::whether the above works
+            }
+        });
 
         //set scroller listener
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

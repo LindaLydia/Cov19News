@@ -8,7 +8,7 @@
     android:layout_marginHorizontal="20dp"
     app:cardBackgroundColor="@color/cardBackgroundColor"
     app:cardElevation="3dp"
-    app:cardCornerRadius="1dp">
+    app:cardCornerRadius="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,14 +27,6 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_vertical" />
 
-            <!--        <ImageView-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="match_parent"-->
-            <!--            android:layout_centerInParent="true"-->
-            <!--            android:id="@+id/item_cover"-->
-            <!--            android:src="@drawable/start"-->
-            <!--            android:visibility="gone"/>-->
-
         </RelativeLayout>
 
         <LinearLayout
@@ -49,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:textColor="@color/titleItemUnselColor"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 android:textStyle="bold"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
@@ -78,7 +70,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/textview_border"
                 android:id="@+id/item_date_time"
                 android:textColor="@color/keywordColor"
                 android:height="40dp"
@@ -142,7 +133,7 @@
                 <com.sackcentury.shinebuttonlib.ShineButton
                     android:id="@+id/item_star_button"
                     android:layout_width="30dp"
-                    android:layout_height="22dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginVertical="5dp"
                     android:layout_marginRight="0dp"
