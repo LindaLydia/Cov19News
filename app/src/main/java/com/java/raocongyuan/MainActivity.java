@@ -112,8 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 graphText.setTextColor(Color.BLACK);
                 classificationText.setTextColor(Color.BLACK);
                 expertText.setTextColor(Color.BLACK);
-                //adapter.getItem(0);
-                //TODO::front::whether the above works
+                viewPager.setCurrentItem(0);
             }
         });
         statisticsText.setOnClickListener(new View.OnClickListener() {
@@ -124,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 graphText.setTextColor(Color.BLACK);
                 classificationText.setTextColor(Color.BLACK);
                 expertText.setTextColor(Color.BLACK);
-                //adapter.getItem(1);
-                //TODO::front::whether the above works
+                viewPager.setCurrentItem(1);
             }
         });
         graphText.setOnClickListener(new View.OnClickListener() {
@@ -136,8 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 graphText.setTextColor(Color.BLUE);
                 classificationText.setTextColor(Color.BLACK);
                 expertText.setTextColor(Color.BLACK);
-                //adapter.getItem(2);
-                //TODO::front::whether the above works
+                viewPager.setCurrentItem(2);
             }
         });
         classificationText.setOnClickListener(new View.OnClickListener() {
@@ -148,8 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 graphText.setTextColor(Color.BLACK);
                 classificationText.setTextColor(Color.BLUE);
                 expertText.setTextColor(Color.BLACK);
-                //adapter.getItem(3);
-                //TODO::front::whether the above works
+                viewPager.setCurrentItem(3);
             }
         });
         expertText.setOnClickListener(new View.OnClickListener() {
@@ -160,8 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 graphText.setTextColor(Color.BLACK);
                 classificationText.setTextColor(Color.BLACK);
                 expertText.setTextColor(Color.BLUE);
-                //adapter.getItem(4);
-                //TODO::front::whether the above works
+                viewPager.setCurrentItem(4);
             }
         });
 

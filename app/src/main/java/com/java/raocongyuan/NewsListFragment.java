@@ -146,7 +146,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                     int len = left + width / 2 - screenWidth / 2;
                     hsv.smoothScrollTo(len, 0);
                     selectedChannel = choices.get(position);
-                    setTopView(position);
+                    setNewsList(position);
                 }
         });
 
@@ -164,7 +164,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView = (RecyclerView)view.findViewById(R.id.news_list);
 
-        setTopView(0);
+        setTopView();
 
         viewPager.setCurrentItem(0);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -183,8 +183,6 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                 int screenWidth = metrics.widthPixels;
                 int len = left + width / 2 - screenWidth / 2;
                 hsv.smoothScrollTo(len, 0);
-                selectedChannel = choices.get(position);
-                setTopView(position);
             }
 
             @Override
@@ -246,22 +244,10 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         });
     }
 
-
-    private void setTopView(int position) {
-        currentNewsList.clear();
-        radioGroup.removeAllViews();
-        choices = TopMenuChoice.getChoice();
-
-        for(int i = 0; i < choices.size(); i++) {
-            RadioButton rb = (RadioButton) inflater.inflate(R.layout.top_news_radiobutton, null);
-            rb.setId(i);
-            rb.setText(choices.get(i));
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            radioGroup.addView(rb, params);
-        }
+    private void setNewsList(int position) {
+        selectedChannel = choices.get(position);
         radioGroup.check(position);
         RadioButton rbButton = (RadioButton) radioGroup.getChildAt(position);
-        //rbButton.setChecked(true);
         int left = rbButton.getLeft();
         int width = rbButton.getMeasuredWidth();
         DisplayMetrics metrics = new DisplayMetrics();
@@ -269,8 +255,6 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         int screenWidth = metrics.widthPixels;
         int len = left + width / 2 - screenWidth / 2;
         hsv.smoothScrollTo(len, 0);
-        selectedChannel = choices.get(position);
-        //adapter.notifyDataSetChanged();
 
         currentNewsList.clear();
         for(int i = 0; i < choices.size(); i++) {
@@ -295,13 +279,61 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
     }
 
 
+    private void setTopView() {
+        currentNewsList.clear();
+        radioGroup.removeAllViews();
+        choices = TopMenuChoice.getChoice();
+
+        for(int i = 0; i < choices.size(); i++) {
+            RadioButton rb = (RadioButton) inflater.inflate(R.layout.top_news_radiobutton, null);
+            rb.setId(i);
+            rb.setText(choices.get(i));
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            radioGroup.addView(rb, params);
+        }
+        radioGroup.check(0);
+        RadioButton rbButton = (RadioButton) radioGroup.getChildAt(0);
+        //rbButton.setChecked(true);
+        int left = rbButton.getLeft();
+        int width = rbButton.getMeasuredWidth();
+        DisplayMetrics metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int screenWidth = metrics.widthPixels;
+        int len = left + width / 2 - screenWidth / 2;
+        hsv.smoothScrollTo(len, 0);
+        selectedChannel = choices.get(0);
+        //adapter.notifyDataSetChanged();
+
+        currentNewsList.clear();
+        for(int i = 0; i < choices.size(); i++) {
+            if(choices.get(i).equals(selectedChannel))
+                for(int j = 0; j < 2; j++){
+                    String temp = choices.get(i)+" "+j;
+                    News fg = new News(temp);
+                    //TODO::backend get news from the backend data base(need to search)
+                    /*
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", choices.get(i));
+                    fg.setArguments(bundle);
+                    */
+                    currentNewsList.add(fg);
+                }
+        }
+        adapter.updateNews(currentNewsList);
+        adapter.notifyDataSetChanged();
+        recyclerView.setAdapter(adapter);
+        //viewPager.setAdapter((PagerAdapter)adapter);
+        viewPager.setCurrentItem(0);
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case CHANNELREQUEST:
                 if(resultCode == CHANNELRESULT) {
-                    setTopView(0);
+                    setTopView();
                     viewPager.setCurrentItem(0);
                 }
                 break;
