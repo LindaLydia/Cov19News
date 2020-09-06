@@ -19,6 +19,10 @@ public class Entity {
 
     private LinkedHashMap<String,String> processed_relations;
 
+    private boolean isExpended_first = false;
+    private boolean isExpended_relations = false;
+    private boolean isExpended_properties = false;
+
     //TODO::backend::fill in the data
     Entity(String name, URL url, String definition, LinkedHashMap<String,RelationshipDescription> relations, LinkedHashMap<String,String> properties){
         this.name = name;
@@ -47,4 +51,34 @@ public class Entity {
             processed_relations.put(key,temp);
         }
     }
+
+    public String getName(){
+        return name;
+    }
+
+    public boolean Expended_first(){
+        return isExpended_first;
+    }
+
+    public boolean Expended_relations(){
+        return isExpended_relations;
+    }
+
+    public boolean Expended_properties(){
+        return isExpended_properties;
+    }
+
+    public void ExpendChange_first(){
+        isExpended_first = !isExpended_first;
+    }
+
+    public void ExpendChange_relations(){
+        isExpended_relations = !isExpended_relations;
+    }
+
+    public void ExpendChange_properties(){
+        isExpended_properties = !isExpended_properties;
+    }
+
+
 }

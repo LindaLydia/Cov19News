@@ -1,14 +1,21 @@
 package com.java.raocongyuan;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,8 +35,10 @@ public class GraphFragment extends Fragment {
 
     private SearchView searchView;
     private RecyclerView recyclerView;
-    private ExpandableEntityAdapter adapter;
+    private TreeRecyclerAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    private List<Entity> currentEntityList;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -70,6 +79,52 @@ public class GraphFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_graph, container, false);
+        this.inflater = inflater;
+        this.view = inflater.inflate(R.layout.fragment_graph, container, false);
+        searchView = (SearchView)view.findViewById(R.id.search_view);
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search_key = searchView.getQuery().toString();
+                Log.d("search_key = ",search_key);
+                //TODO::backend::give the "search_key" and return all the entities whose name includes the search key
+                //currentEntityList =
+                renewData();
+            }
+        });
+
+        recyclerView = (RecyclerView)view.findViewById(R.id.entity_recyclerView);
+        recyclerView.getItemAnimator().setAddDuration(100);
+        recyclerView.getItemAnimator().setRemoveDuration(100);
+        recyclerView.getItemAnimator().setMoveDuration(200);
+        recyclerView.getItemAnimator().setChangeDuration(100);
+
+        layoutManager = new LinearLayoutManager(this.getActivity(),LinearLayoutManager.VERTICAL,false);
+        adapter = new TreeRecyclerAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(layoutManager);
+
+        //TODO::front::Listener for adapter???
+        adapter.setOnScrollToListener(new OnScrollToListener() {
+
+            @Override
+            public void scrollTo(int position) {
+                recyclerView.scrollToPosition(position);
+            }
+        });
+        initData();
+        return view;
     }
+
+    private void initData(){
+        currentEntityList = new ArrayList<Entity>();
+        adapter.setData(currentEntityList);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void renewData(){
+        adapter.setData(currentEntityList);
+        adapter.notifyDataSetChanged();
+    }
+
 }

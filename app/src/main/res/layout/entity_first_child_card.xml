@@ -80,7 +80,19 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 app:srcCompat="@drawable/load_more_button" />
+
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relations_may_gone_relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <include layout="@layout/entity_second_child_card" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/horizontal_layout_for_properties"
@@ -106,5 +118,15 @@
                 android:layout_height="20dp"
                 app:srcCompat="@drawable/load_more_button" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/properties_may_gone_relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/entity_second_child_card" />
+
+        </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
