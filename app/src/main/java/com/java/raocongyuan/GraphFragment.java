@@ -3,10 +3,12 @@ package com.java.raocongyuan;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 
 /**
@@ -19,6 +21,15 @@ public class GraphFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private LayoutInflater inflater;
+    private View view;
+    private String search_key;
+
+    private SearchView searchView;
+    private RecyclerView recyclerView;
+    private ExpandableEntityAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
