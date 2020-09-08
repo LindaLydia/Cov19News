@@ -129,6 +129,7 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
                 properties.put("生理机能","体外分离培养时，2019-nCoV 96个小时左右即可在人呼吸道上皮细胞内发现，而在Vero E6 和Huh-7细胞系中分离培养需约6天。病毒对紫外线和热敏感，56℃ 30分钟、乙醚、75%乙醇、含氯消毒剂、过氧乙酸和氯仿等脂溶剂均可有效灭活病毒，氯已定不能有效灭火病毒。");
                 Entity e2 = new Entity("新型冠状病毒",null,null,relations,properties);
                 currentEntityList.clear();
+                currentEntityList.add(e2);
                 currentEntityList.add(e1);
                 currentEntityList.add(e2);
                 //Log.d("after search1, ",currentEntityList.size()+" "+adapter.getItemCount());

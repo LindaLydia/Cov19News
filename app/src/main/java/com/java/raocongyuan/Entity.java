@@ -125,12 +125,4 @@ public class Entity {
         isExpended_properties = !isExpended_properties;
     }
 
-    public int getExtentionType(){
-        return this.extention_type;
-    }
-
-    public void setExtentionType(int type){
-        this.extention_type = type;
-    }
-
 }
