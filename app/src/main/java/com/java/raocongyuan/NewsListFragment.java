@@ -13,6 +13,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.java.raocongyuan.backend.DataManager;
+import com.java.raocongyuan.backend.data.News;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -77,6 +80,8 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         // Required empty public constructor
     }
 
+    private DataManager manager;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -103,6 +108,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        manager = DataManager.getInstance(null);
     }
 
     @Override
@@ -200,9 +206,9 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         //TODO: for backend: an interface providing all the news presented in the news list
         //temporary code for test
         //currentNewsList.clear();
-        if(currentNewsList.size()==0)
+        /*if(currentNewsList.size()==0)
             for(int in = 0; in < 10; in++)
-                currentNewsList.add(new News(in));
+                currentNewsList.add(new News(in));*/
         ////////////////currentNewsList = API_RETURN;
         return currentNewsList;
     }
@@ -210,10 +216,10 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
     @Override
     public void onMenuItemClick(int position) {
 //        Log.d("position", letterList[position]);
-        currentNewsList.get(position).setRead();
+        // currentNewsList.get(position).setRead();
         Intent intent;
         intent = new Intent(this.getActivity(), DetailNewsActivity.class);
-        intent.putExtra("NewsId",currentNewsList.get(position).getId());
+        intent.putExtra("NewsId",currentNewsList.get(position)._id);
         startActivity(intent);
     }
 
@@ -227,9 +233,9 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
                 //TODO::backend::An API for updating news
-                currentNewsList.add(0,new News("update"));
+                /*currentNewsList.add(0,new News("update"));
                 adapter.updateNews(currentNewsList);
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -237,9 +243,9 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             public void onLoadMore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
                 //TODO::backend::An API for loading more news
-                currentNewsList.add(new News("load more"));
+                /*currentNewsList.add(new News("load more"));
                 adapter.refreshNews(currentNewsList);
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
             }
         });
     }
@@ -261,14 +267,14 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             if(choices.get(i).equals(selectedChannel))
                 for(int j = 0; j < 2; j++){
                     String temp = choices.get(i)+" "+j;
-                    News fg = new News(temp);
+                    // News fg = new News(temp);
                     //TODO::backend get news from the backend data base(need to search)
                     /*
                     Bundle bundle = new Bundle();
                     bundle.putString("name", choices.get(i));
                     fg.setArguments(bundle);
                     */
-                    currentNewsList.add(fg);
+                    //currentNewsList.add(fg);
                 }
         }
         adapter.updateNews(currentNewsList);
@@ -304,26 +310,15 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         selectedChannel = choices.get(0);
         //adapter.notifyDataSetChanged();
 
-        currentNewsList.clear();
-        for(int i = 0; i < choices.size(); i++) {
-            if(choices.get(i).equals(selectedChannel))
-                for(int j = 0; j < 2; j++){
-                    String temp = choices.get(i)+" "+j;
-                    News fg = new News(temp);
-                    //TODO::backend get news from the backend data base(need to search)
-                    /*
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", choices.get(i));
-                    fg.setArguments(bundle);
-                    */
-                    currentNewsList.add(fg);
-                }
-        }
-        adapter.updateNews(currentNewsList);
-        adapter.notifyDataSetChanged();
-        recyclerView.setAdapter(adapter);
-        //viewPager.setAdapter((PagerAdapter)adapter);
-        viewPager.setCurrentItem(0);
+        manager.getNews("news", 20, null, (newsList) -> {
+            currentNewsList = newsList;
+            Log.d("getNews", "setTopView: " + newsList.size());
+            adapter.updateNews(currentNewsList);
+            adapter.notifyDataSetChanged();
+            Log.d("notify", "setTopView: " + adapter.getItemCount());
+            recyclerView.setAdapter(adapter);
+            viewPager.setCurrentItem(0);
+        });
     }
 
 
@@ -344,9 +339,9 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                     //TODO::search with multiple key-words adding the channel type
                     //TODO::front::load the data
                     //currentNewsList = currentNewsList;
-                    currentNewsList.add(0,new News("search"));
+                    /*currentNewsList.add(0,new News("search"));
                     adapter.updateNews(currentNewsList);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();*/
                 }
                 break;
         }

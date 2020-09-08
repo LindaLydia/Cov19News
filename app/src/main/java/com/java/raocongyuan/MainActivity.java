@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.java.raocongyuan.backend.DataManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         this.initTabLine();
         //initialize the view for this activity
         this.initView();
+
+        DataManager.getInstance(getApplicationContext());
     }
 
     private void initTabLine() {

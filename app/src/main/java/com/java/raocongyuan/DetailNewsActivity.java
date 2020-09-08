@@ -29,7 +29,7 @@ public class DetailNewsActivity extends AppCompatActivity {
 
         //TODO::backend::get news by ID
         //TODO::API
-        final News newsItem = new News(true);
+        /*final News newsItem = new News(true);
 
         txtTitle = (TextView)findViewById(R.id.page_title);
         txtContent = (TextView)findViewById(R.id.page_content);
@@ -59,7 +59,7 @@ public class DetailNewsActivity extends AppCompatActivity {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(newsItem);
                 bottomSheetDialog.show(getSupportFragmentManager(), "bottomSheet");
             }
-        });
+        });*/
 
 
     }

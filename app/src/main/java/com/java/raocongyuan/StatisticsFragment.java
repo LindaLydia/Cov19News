@@ -38,6 +38,7 @@ import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.java.raocongyuan.backend.DataManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,13 +46,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.zip.Inflater;
 
 
-class AccumulativeStatistics{
-    final int CONFIRMED,CURED,DEAD;
+class AccumulativeStatistics {
+    final int CONFIRMED, CURED, DEAD;
 
-    AccumulativeStatistics(int confirmed, int cured, int dead){
+    AccumulativeStatistics(int confirmed, int cured, int dead) {
         CONFIRMED = confirmed;
         CURED = cured;
         DEAD = dead;
@@ -79,10 +81,12 @@ public class StatisticsFragment extends Fragment {
 
     //TODO::data gotten from backend
     //Map<CONFIRMED||CURED||DEAD,List<series of everyday data, accumulative>>, make sure the 3 list are of the same length
-    private Map<String, List<Integer>> line_data = new HashMap<String,List<Integer>>();
+    private Map<String, List<Integer>> line_data = new HashMap<String, List<Integer>>();
     private String start_date;
     //Map<Country||Province,AccumulativeStatistics(3 Integer)>
-    private Map<String,AccumulativeStatistics> bar_data = new LinkedHashMap<String,AccumulativeStatistics>();
+    private Map<String, AccumulativeStatistics> bar_data = new LinkedHashMap<String, AccumulativeStatistics>();
+
+    private DataManager manager;
 
 
     // TODO: Rename and change types of parameters
@@ -118,6 +122,7 @@ public class StatisticsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        manager = DataManager.getInstance(null);
     }
 
     @Override
@@ -127,31 +132,41 @@ public class StatisticsFragment extends Fragment {
         this.view = inflater.inflate(R.layout.fragment_statistics, container, false);
 
         //TODO::front::delete the below fake data
-        AccumulativeStatistics a1 = new AccumulativeStatistics(200,132,23);
-        AccumulativeStatistics a2 = new AccumulativeStatistics(300,192,72);
-        AccumulativeStatistics a3 = new AccumulativeStatistics(400,93,31);
-        AccumulativeStatistics a4 = new AccumulativeStatistics(500,63,419);
+        AccumulativeStatistics a1 = new AccumulativeStatistics(200, 132, 23);
+        AccumulativeStatistics a2 = new AccumulativeStatistics(300, 192, 72);
+        AccumulativeStatistics a3 = new AccumulativeStatistics(400, 93, 31);
+        AccumulativeStatistics a4 = new AccumulativeStatistics(500, 63, 419);
         bar_data.clear();
-        bar_data.put("place1",a1);
-        bar_data.put("place2",a2);
-        bar_data.put("place3",a3);
-        bar_data.put("place4",a4);
+        bar_data.put("place1", a1);
+        bar_data.put("place2", a2);
+        bar_data.put("place3", a3);
+        bar_data.put("place4", a4);
         line_data.clear();
-        line_data.put("CONFIRMED",new ArrayList<Integer>(Arrays.asList(62,137,200)));
-        line_data.put("CURED",new ArrayList<Integer>(Arrays.asList(47,56,132)));
-        line_data.put("DEAD",new ArrayList<Integer>(Arrays.asList(3,18,23)));
+        line_data.put("CONFIRMED", new ArrayList<Integer>(Arrays.asList(62, 137, 200)));
+        line_data.put("CURED", new ArrayList<Integer>(Arrays.asList(47, 56, 132)));
+        line_data.put("DEAD", new ArrayList<Integer>(Arrays.asList(3, 18, 23)));
 
         toggleButton = view.findViewById(R.id.area_switch_button);
         line_chart = view.findViewById(R.id.line_chart_for_trend);
         bar_chart = view.findViewById(R.id.bar_char_for_total);
-        toggleButton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener(){
+        toggleButton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 toggleButton.setChecked(isChecked);
                 isInternational = isChecked;
-                //TODO::backend::get new status
-                bar_data.put("placeX",new AccumulativeStatistics(4872,1663,2419));
-                SetBarChart();
-                SetLineChart();
+                if (isInternational) {
+                    manager.getDomestic(10, (epidemicList) -> {
+                        //TODO::front::save data
+                        SetBarChart();
+                        SetLineChart();
+                    });
+                } else {
+                    manager.getInternational(10, (epidemicList) -> {
+                        //TODO::front::save data
+                        SetBarChart();
+                        SetLineChart();
+                    });
+                }
+
             }
 
         });
@@ -160,7 +175,7 @@ public class StatisticsFragment extends Fragment {
         return view;
     }
 
-    private void init(){
+    private void init() {
         //TODO::backend and front::get data with parameter isInternational
         //TODO::line_data, start_date, bar_data
 
@@ -176,30 +191,28 @@ public class StatisticsFragment extends Fragment {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 int ic = 0;
-                for(LinkedHashMap.Entry<String,AccumulativeStatistics> entry : bar_data.entrySet()){
-                    Log.d("Entry e =",e.toString()+" -- e.getX() = "+e.getX());
+                for (LinkedHashMap.Entry<String, AccumulativeStatistics> entry : bar_data.entrySet()) {
+                    Log.d("Entry e =", e.toString() + " -- e.getX() = " + e.getX());
                     float ix = e.getX();
-                    if(Math.floor(ix)==ic){
+                    if (Math.floor(ix) == ic) {
                         String place_name = entry.getKey();
                         Log.d("place_name", place_name);
                         //TODO::backend::get the trend-data for this place
                         //line_data =
                         //TODO::front::delete the fake statistics below
                         line_data.clear();
-                        if(place_name=="place1"){
-                            line_data.put("CONFIRMED",new ArrayList<Integer>(Arrays.asList(62,137,200)));
-                            line_data.put("CURED",new ArrayList<Integer>(Arrays.asList(47,56,132)));
-                            line_data.put("DEAD",new ArrayList<Integer>(Arrays.asList(3,18,23)));
-                        }
-                        else if(place_name=="place2"){
-                            line_data.put("CONFIRMED",new ArrayList<Integer>(Arrays.asList(70,164,300)));
-                            line_data.put("CURED",new ArrayList<Integer>(Arrays.asList(13,96,192)));
-                            line_data.put("DEAD",new ArrayList<Integer>(Arrays.asList(16,58,72)));
+                        if (place_name == "place1") {
+                            line_data.put("CONFIRMED", new ArrayList<Integer>(Arrays.asList(62, 137, 200)));
+                            line_data.put("CURED", new ArrayList<Integer>(Arrays.asList(47, 56, 132)));
+                            line_data.put("DEAD", new ArrayList<Integer>(Arrays.asList(3, 18, 23)));
+                        } else if (place_name == "place2") {
+                            line_data.put("CONFIRMED", new ArrayList<Integer>(Arrays.asList(70, 164, 300)));
+                            line_data.put("CURED", new ArrayList<Integer>(Arrays.asList(13, 96, 192)));
+                            line_data.put("DEAD", new ArrayList<Integer>(Arrays.asList(16, 58, 72)));
                         }
                         SetLineChart();
                         break;
-                    }
-                    else{
+                    } else {
                         ic++;
                     }
                 }
@@ -296,7 +309,7 @@ public class StatisticsFragment extends Fragment {
         bar_chart.setDrawGridBackground(false);//another listener???
     }
 
-    private void initChart(){
+    private void initChart() {
         //TODO::front::is this chart the same instance of the original parameter?
 
         //***chart settings for bar_chart***//
@@ -382,8 +395,8 @@ public class StatisticsFragment extends Fragment {
 
     }
 
-    private void SetBarChart(){
-        if(bar_data.size()==0)
+    private void SetBarChart() {
+        if (bar_data.size() == 0)
             return;
 
         List<BarEntry> confirmed_data = new ArrayList<BarEntry>();
@@ -392,26 +405,26 @@ public class StatisticsFragment extends Fragment {
         final List<String> place = new ArrayList<String>();
 
         int ic = 0;
-        for(LinkedHashMap.Entry<String,AccumulativeStatistics> e : bar_data.entrySet()){
-            confirmed_data.add(new BarEntry(ic,e.getValue().CONFIRMED));
-            cured_data.add(new BarEntry(ic,e.getValue().CURED));
-            dead_data.add(new BarEntry(ic,e.getValue().DEAD));//val,xIndex
+        for (LinkedHashMap.Entry<String, AccumulativeStatistics> e : bar_data.entrySet()) {
+            confirmed_data.add(new BarEntry(ic, e.getValue().CONFIRMED));
+            cured_data.add(new BarEntry(ic, e.getValue().CURED));
+            dead_data.add(new BarEntry(ic, e.getValue().DEAD));//val,xIndex
             place.add(e.getKey());
             ic++;
         }
 
         BarDataSet bardataset1 = new BarDataSet(confirmed_data, "CONFIRMED");
-        bardataset1.setColor(Color.rgb(234,139,0));
+        bardataset1.setColor(Color.rgb(234, 139, 0));
         BarDataSet bardataset2 = new BarDataSet(cured_data, "CURED");
-        bardataset2.setColor(Color.rgb(48,190,48));
+        bardataset2.setColor(Color.rgb(48, 190, 48));
         BarDataSet bardataset3 = new BarDataSet(dead_data, "DEAD");
-        bardataset3.setColor(Color.rgb(200,0,0));
+        bardataset3.setColor(Color.rgb(200, 0, 0));
 
         //X轴自定义值
         bar_chart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                if(value >= 0)
+                if (value >= 0)
                     return place.get((int) value % place.size());
                 else
                     return "-1";
@@ -441,9 +454,9 @@ public class StatisticsFragment extends Fragment {
         bar_chart.setData(data);
     }
 
-    private void SetLineChart(){
+    private void SetLineChart() {
         //TODO::front::what if the Integer equals "null"
-        if(line_data.size()==0){
+        if (line_data.size() == 0) {
             LineData data = new LineData();
             line_chart.notifyDataSetChanged();
             line_chart.invalidate();
@@ -456,7 +469,7 @@ public class StatisticsFragment extends Fragment {
         List<Integer> cured_trend = line_data.get("CURED");
         List<Integer> dead_trend = line_data.get("DEAD");
 
-        if(confirmed_trend.size()==0){
+        if (confirmed_trend.size() == 0) {
             LineData data = new LineData();
             line_chart.notifyDataSetChanged();
             line_chart.invalidate();
@@ -471,26 +484,26 @@ public class StatisticsFragment extends Fragment {
         final List<Integer> date_count = new ArrayList<Integer>();
 
         int count = confirmed_trend.size();
-        for(int ic = 0; ic < count; ic++){
-            System.out.println(ic+" "+confirmed_trend.get(ic)+" "+cured_trend.get(ic)+" "+dead_trend.get(ic));
-            confirmed_data.add(new Entry(ic,confirmed_trend.get(ic)));
-            cured_data.add(new Entry(ic,cured_trend.get(ic)));
-            dead_data.add(new Entry(ic,dead_trend.get(ic)));//val,xIndex
-            date_count.add(ic+1);
+        for (int ic = 0; ic < count; ic++) {
+            System.out.println(ic + " " + confirmed_trend.get(ic) + " " + cured_trend.get(ic) + " " + dead_trend.get(ic));
+            confirmed_data.add(new Entry(ic, confirmed_trend.get(ic)));
+            cured_data.add(new Entry(ic, cured_trend.get(ic)));
+            dead_data.add(new Entry(ic, dead_trend.get(ic)));//val,xIndex
+            date_count.add(ic + 1);
         }
 
         LineDataSet linedataset1 = new LineDataSet(confirmed_data, "CONFIRMED");
-        linedataset1.setColor(Color.rgb(234,139,0));
+        linedataset1.setColor(Color.rgb(234, 139, 0));
         LineDataSet linedataset2 = new LineDataSet(cured_data, "CURED");
-        linedataset2.setColor(Color.rgb(48,190,48));
+        linedataset2.setColor(Color.rgb(48, 190, 48));
         LineDataSet linedataset3 = new LineDataSet(dead_data, "DEAD");
-        linedataset3.setColor(Color.rgb(200,0,0));
+        linedataset3.setColor(Color.rgb(200, 0, 0));
 
         line_chart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                if(value >= 0 && value < date_count.size())
-                    return ("day "+date_count.get((int) value % date_count.size()));
+                if (value >= 0 && value < date_count.size())
+                    return ("day " + date_count.get((int) value % date_count.size()));
                 else
                     return "";
             }

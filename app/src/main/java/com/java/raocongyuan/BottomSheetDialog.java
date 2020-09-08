@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.java.raocongyuan.backend.data.News;
 
 public class BottomSheetDialog extends BottomSheetDialogFragment {
     private News news;
