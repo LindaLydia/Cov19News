@@ -38,7 +38,7 @@
                 android:id="@+id/load_first_child_button"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                app:srcCompat="@drawable/load_more_button" />
+                app:srcCompat="@drawable/ic_more" />
 
         </LinearLayout>
 
@@ -131,7 +131,7 @@
                             android:id="@+id/load_more_relations"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            app:srcCompat="@drawable/load_more_button" />
+                            app:srcCompat="@drawable/ic_more" />
 
                     </LinearLayout>
 
@@ -194,7 +194,7 @@
                             android:id="@+id/load_more_properties"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            app:srcCompat="@drawable/load_more_button" />
+                            app:srcCompat="@drawable/ic_more" />
                     </LinearLayout>
 
                     <RelativeLayout

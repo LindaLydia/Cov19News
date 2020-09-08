@@ -121,7 +121,7 @@ public class ChannelActivity extends AppCompatActivity {
 
 
         //将频道列表添加到界面
-        channelView.setChannelFixedCount(2);
+        channelView.setChannelFixedCount(1);
         //data.put("selected channels", ch_userChannelList);
         //data.put("other channels", ch_otherChannelList);
         channelView.addPlate("selected channels", ch_userChannelList);

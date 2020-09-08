@@ -6,6 +6,7 @@ public class TopMenuChoice {
     private static ArrayList<String> choice = new ArrayList<>();
 
     static {
+        choice.add("All");
         choice.add("News");
         choice.add("Papers");
         choice.add("Events");
