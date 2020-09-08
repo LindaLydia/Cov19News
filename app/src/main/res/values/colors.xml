@@ -6,7 +6,7 @@
     <color name="BLUE">#0000FF</color>
 
     <color name="cardBackgroundColor">#DDF2FF</color> <!--light light blue-->
-    <color name="second_cardBackgroundColor">#E0E0F0</color> <!--light light blue-->
+    <color name="second_cardBackgroundColor">#F0F0F8</color> <!--light light gray-->
     <color name="titleItemUnselColor">#000000</color>
     <color name="titleItemSelColor">#5d5d5d</color>
     <color name="abstractItemUnselColor">#5d5d5d</color>

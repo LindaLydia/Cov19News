@@ -1,43 +1,64 @@
 package com.java.raocongyuan;
 
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 class RelationshipDescription{
     boolean belongsTo;//API::relations-forward
     String noun;//API::relations-relation
+
+    RelationshipDescription(boolean flag, String noun){
+        this.belongsTo = flag;
+        this.noun = noun;
+    }
 }
 
 public class Entity {
-    private String name;//API::label
-    private URL picture;//API::img
-    private String definition;//API::
+
+    public static final int ITEM_TYPE_ENTITY = 0;
+    public static final int ITEM_TYPE_FIRST_CHILDE = 1;
+    public static final int ITEM_TYPE_RELATION = 2;
+    public static final int ITEM_TYPE_PROPERTY = 3;
+    private String uuid;
+
+    private String name = "";//API::label
+    private String picture;//API::img, can be "null"
+    private String definition;//API::, can be "null"
     //Map<name_of_anthor_entity(API::relations-label),relationship>
-    private LinkedHashMap<String,RelationshipDescription> relations;
+    private LinkedHashMap<String,RelationshipDescription> relations = new LinkedHashMap<String,RelationshipDescription>();
     //Map<type_of_property,description>
-    private LinkedHashMap<String,String> properties;
+    private LinkedHashMap<String,String> properties = new LinkedHashMap<String,String>();
 
     private LinkedHashMap<String,String> processed_relations;
+    private List<String> processed_properties;
 
     private boolean isExpended_first = false;
     private boolean isExpended_relations = false;
     private boolean isExpended_properties = false;
 
+    int extention_type = Entity.ITEM_TYPE_ENTITY;
+
     //TODO::backend::fill in the data
-    Entity(String name, URL url, String definition, LinkedHashMap<String,RelationshipDescription> relations, LinkedHashMap<String,String> properties){
+    Entity(String name, String url, String definition, LinkedHashMap<String,RelationshipDescription> relations, LinkedHashMap<String,String> properties){
         this.name = name;
-        this.picture = url;
+        this.picture = url;//can be "null"
         this.definition = definition;
         this.relations = relations;
         this.properties = properties;
         ProcessRelations();
+        ProcessProperties();
     }
 
     Entity(){
         ProcessRelations();
+        ProcessProperties();
     }
 
     private void ProcessRelations(){
+        processed_relations = new LinkedHashMap<String,String>();
         for(LinkedHashMap.Entry<String,RelationshipDescription> e : relations.entrySet()){
             String key = e.getKey();
             String temp;
@@ -52,8 +73,32 @@ public class Entity {
         }
     }
 
+    private void ProcessProperties(){
+        processed_properties = new ArrayList<String>();
+        for(LinkedHashMap.Entry<String,String> e : properties.entrySet()){
+            String ts = e.getKey() + " : " + e.getValue();
+            processed_properties.add(ts);
+        }
+    }
+
     public String getName(){
         return name;
+    }
+
+    public LinkedHashMap<String,String> getRelations(){
+        return processed_relations;
+    }
+
+    public List<String> getProperties(){
+        return processed_properties;
+    }
+
+    public String getDefinition(){
+        return definition;
+    }
+
+    public String getPicture(){
+        return picture;//if is null, return it
     }
 
     public boolean Expended_first(){
@@ -80,5 +125,12 @@ public class Entity {
         isExpended_properties = !isExpended_properties;
     }
 
+    public int getExtentionType(){
+        return this.extention_type;
+    }
+
+    public void setExtentionType(int type){
+        this.extention_type = type;
+    }
 
 }

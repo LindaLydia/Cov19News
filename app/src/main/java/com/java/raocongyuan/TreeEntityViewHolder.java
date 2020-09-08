@@ -2,6 +2,8 @@ package com.java.raocongyuan;
 
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -17,8 +19,8 @@ public class TreeEntityViewHolder extends TreeBaseViewHolder {
     public LinearLayout linearLayout;
     private boolean isExpanded = false;
 
-    public TreeEntityViewHolder(View v){
-        super(v);
+    public TreeEntityViewHolder(View v, Context context){
+        super(v,context);
         imageButton = (ImageButton)v.findViewById(R.id.load_first_child_button);
         textView = (TextView)v.findViewById(R.id.entity_name_text);
         linearLayout = (LinearLayout)v.findViewById(R.id.entity_card_linearLayout);
@@ -88,7 +90,6 @@ public class TreeEntityViewHolder extends TreeBaseViewHolder {
         });
     }
 
-    //TODO::front::rotationExpandIcon()???
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void rotationExpandIcon(float from, float to) {
 		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
