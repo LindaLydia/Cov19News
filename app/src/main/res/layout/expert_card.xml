@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:layout_marginVertical="5dp"
@@ -27,20 +26,25 @@
                 android:id="@+id/expert_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:srcCompat="@tools:sample/avatars"
-                android:maxHeight="150dp"/>
+                android:layout_gravity="center"
+                android:layout_marginTop="2dp"
+                android:adjustViewBounds="true"
+                android:background="@color/transparent"
+                android:contentDescription="@string/imageview_placeholder"
+                android:maxWidth="100dp" />
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="3dp"
             android:layout_marginVertical="3dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/expert_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
                 android:layout_marginVertical="2dp"
@@ -57,139 +61,157 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginHorizontal="3dp" >
+                    android:layout_marginHorizontal="3dp"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/h_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@color/cardBackgroundColor"
+                        android:text=" H "
                         android:textColor="@color/titleItemSelColor"
-                        android:background="@drawable/textview_border"
-                        android:text="H" />
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/h_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/textview_white_background_border"
-                        android:textColor="@color/titleItemSelColor"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginHorizontal="3dp" >
-                    <TextView
-                        android:id="@+id/g_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:background="@android:color/white"
                         android:textColor="@color/titleItemSelColor"
-                        android:background="@drawable/textview_border"
-                        android:text="G" />
-
-                    <TextView
-                        android:id="@+id/g_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_white_background_border"
-                        android:textColor="@color/titleItemSelColor"/>
+                        android:textSize="12sp"/>
                 </LinearLayout>
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="3dp"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/g_text"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@color/cardBackgroundColor"-->
+<!--                        android:text=" G "-->
+<!--                        android:textColor="@color/titleItemSelColor"-->
+<!--                        android:textSize="12sp"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/g_value"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@android:color/white"-->
+<!--                        android:textColor="@color/titleItemSelColor"-->
+<!--                        android:textSize="12sp"/>-->
+<!--                </LinearLayout>-->
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginHorizontal="3dp">
+                    android:layout_marginHorizontal="3dp"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/a_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@color/cardBackgroundColor"
+                        android:text=" A "
                         android:textColor="@color/titleItemSelColor"
-                        android:background="@drawable/textview_border"
-                        android:text="A" />
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/a_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/textview_white_background_border"
-                        android:textColor="@color/titleItemSelColor"/>
+                        android:background="@android:color/white"
+                        android:textColor="@color/titleItemSelColor"
+                        android:textSize="12sp"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginHorizontal="3dp">
+                    android:layout_marginHorizontal="3dp"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/s_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@color/cardBackgroundColor"
+                        android:text=" S "
                         android:textColor="@color/titleItemSelColor"
-                        android:background="@drawable/textview_border"
-                        android:text="S" />
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/s_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/textview_white_background_border"
-                        android:textColor="@color/titleItemSelColor"/>
+                        android:background="@android:color/white"
+                        android:textColor="@color/titleItemSelColor"
+                        android:textSize="12sp"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginHorizontal="3dp">
+                    android:layout_marginHorizontal="3dp"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/c_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@color/cardBackgroundColor"
+                        android:text=" c "
                         android:textColor="@color/titleItemSelColor"
-                        android:background="@drawable/textview_border"
-                        android:text="c" />
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/c_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/textview_white_background_border"
-                        android:textColor="@color/titleItemSelColor"/>
+                        android:background="@android:color/white"
+                        android:textColor="@color/titleItemSelColor"
+                        android:textSize="12sp"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginHorizontal="3dp">
+                    android:layout_marginHorizontal="3dp"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/p_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@color/cardBackgroundColor"
+                        android:text=" P "
                         android:textColor="@color/titleItemSelColor"
-                        android:background="@drawable/textview_border"
-                        android:text="P" />
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/p_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/textview_white_background_border"
-                        android:textColor="@color/titleItemSelColor"/>
+                        android:background="@android:color/white"
+                        android:textColor="@color/titleItemSelColor"
+                        android:textSize="12sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -197,14 +219,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginHorizontal="2dp"
-                android:layout_marginVertical="2dp">
+                android:layout_marginVertical="2dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:background="@color/transparent"
                     app:srcCompat="@drawable/ic_briefcase" />
 
@@ -212,37 +234,36 @@
                     android:id="@+id/breifcase_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="2dp"
                     android:layout_weight="1"
                     android:text="TextView"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp"
-                    android:layout_marginHorizontal="2dp" />
+                    android:textColor="@color/titleItemSelColor"
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginHorizontal="2dp"
-                android:layout_marginVertical="2dp">
+                android:layout_marginVertical="2dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:background="@color/transparent"
-                    app:srcCompat="@drawable/ic_institution"
-                    android:layout_marginHorizontal="2dp" />
+                    app:srcCompat="@drawable/ic_institution" />
 
                 <TextView
                     android:id="@+id/institution_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="2dp"
                     android:layout_weight="1"
                     android:text="TextView"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp"
-                    android:layout_marginHorizontal="2dp" />
+                    android:textColor="@color/titleItemSelColor"
+                    android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
 

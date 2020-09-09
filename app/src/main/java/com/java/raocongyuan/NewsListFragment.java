@@ -227,7 +227,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         refreshLayout.setRefreshFooter(new ClassicsFooter(getActivity()));
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh(@NotNull RefreshLayout refreshlayout) {
+            public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
                 //TODO::backend::An API for updating news
                 /*currentNewsList.add(0,new News("update"));
@@ -237,7 +237,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoadMore(@NotNull RefreshLayout refreshlayout) {
+            public void onLoadMore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
                 //TODO::backend::An API for loading more news
                 /*currentNewsList.add(new News("load more"));
