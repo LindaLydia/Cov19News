@@ -1,6 +1,8 @@
 package com.java.raocongyuan;
 
 import android.app.Activity;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +35,7 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
         private TextView position_text;//briefcase
         private TextView affiliation_text;//institution
         private TextView h_value;
-        //private TextView g_value;
+        private TextView g_value;
         private TextView a_value;
         private TextView s_value;
         private TextView c_value;
@@ -48,7 +50,7 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
             position_text = (TextView)v.findViewById(R.id.breifcase_text);//briefcase
             affiliation_text = (TextView)v.findViewById(R.id.institution_text);//institution
             h_value = (TextView)v.findViewById(R.id.h_value);
-            //g_value = (TextView)v.findViewById(R.id.g_value);
+            g_value = (TextView)v.findViewById(R.id.g_value);
             a_value = (TextView)v.findViewById(R.id.a_value);
             s_value = (TextView)v.findViewById(R.id.s_value);
             c_value = (TextView)v.findViewById(R.id.c_value);
@@ -87,17 +89,27 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
         final Expert expert = expertList.get(position);
 
         //Log.d("check onBindViewHolder in ExpertListAdapter: ", "here "+position);
-        if(!expert.avatar.equals(""))
+        if(!expert.avatar.equals("")){
+            if(expert.isPassedAway){
+                ColorMatrix cm = new ColorMatrix();
+                cm.setSaturation(0); // 设置饱和度
+                ColorMatrixColorFilter grayColorFilter = new ColorMatrixColorFilter(cm);
+                holder.imageView.setColorFilter(grayColorFilter);
+            }
             Glide.with(activity).load(expert.avatar).into(holder.imageView);
+        }
         else{
             //Log.e("not picture @ ",String.valueOf(position));
             holder.imageView.setVisibility(View.GONE);
         }
 
+        String temp;
         if(expert.expert_name_zh.equals(""))
-            holder.name_text.setText(expert.expert_name);
+            temp = " "+expert.expert_name+" ";
         else
-            holder.name_text.setText(expert.expert_name_zh);
+            temp = " "+expert.expert_name_zh+" ";
+        holder.name_text.setText(temp);
+
         if(expert.isPassedAway)
             holder.name_text.setBackground(activity.getDrawable(R.drawable.textview_white_background_border));
         //TODO::front::the above works???
@@ -105,7 +117,7 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
         holder.position_text.setText(expert.position);
         holder.affiliation_text.setText(expert.affiliation);
         holder.h_value.setText(String.valueOf(expert.h_value));
-        //holder.g_value.setText(String.valueOf(expert.g_value));
+        holder.g_value.setText(String.valueOf(expert.g_value));
         holder.a_value.setText(String.valueOf(expert.a_value));
         holder.s_value.setText(String.valueOf(expert.s_value));
         holder.c_value.setText(String.valueOf(expert.c_value));

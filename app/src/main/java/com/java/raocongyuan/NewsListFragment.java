@@ -307,7 +307,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         selectedChannel = choices.get(0);
         //adapter.notifyDataSetChanged();
 
-        manager.getNews(selectedChannel, 20, null, (newsList) -> {
+        manager.getNews("news", 20, null, (newsList) -> {
             currentNewsList = newsList;
             //Log.d("getNews", "setTopView: " + newsList.size());
             adapter.updateNews(currentNewsList);

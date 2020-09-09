@@ -1,6 +1,8 @@
 package com.java.raocongyuan;
 
-public class Expert {
+import java.io.Serializable;
+
+public class Expert implements Serializable {
     public String id;
     public String expert_name;
     public String expert_name_zh;
@@ -14,9 +16,11 @@ public class Expert {
     public float s_value;
     public String avatar;
     public String bio;
+    public String edu;
+    public String work;
     public boolean isPassedAway;
 
-    Expert(String id, String expert_name, String expert_name_zh, String affiliation, String position, float h, float g, float a, float c, float p, float s, String avatar, String bio, boolean isPassedAway){
+    Expert(String id, String expert_name, String expert_name_zh, String affiliation, String position, float h, float g, float a, float c, float p, float s, String avatar, String bio, String edu, String work, boolean isPassedAway){
         this.id = id;
         this.expert_name = expert_name;
         this.expert_name_zh = expert_name_zh;
@@ -30,6 +34,8 @@ public class Expert {
         this.s_value = s;
         this.avatar = avatar;
         this.bio = bio;
+        this.edu = edu;
+        this.work = work;
         this.isPassedAway = isPassedAway;
     }
 

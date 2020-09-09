@@ -53,9 +53,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginHorizontal="2dp"
-                android:layout_marginVertical="2dp"
+                android:layout_marginVertical="3dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -66,49 +67,49 @@
 
                     <TextView
                         android:id="@+id/h_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="15dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/cardBackgroundColor"
                         android:text=" H "
                         android:textColor="@color/titleItemSelColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/h_value"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@android:color/white"
                         android:textColor="@color/titleItemSelColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </LinearLayout>
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginHorizontal="3dp"-->
-<!--                    android:orientation="horizontal">-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="3dp"
+                    android:orientation="horizontal">
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/g_text"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:background="@color/cardBackgroundColor"-->
-<!--                        android:text=" G "-->
-<!--                        android:textColor="@color/titleItemSelColor"-->
-<!--                        android:textSize="12sp"/>-->
+                    <TextView
+                        android:id="@+id/g_text"
+                        android:layout_width="15dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/cardBackgroundColor"
+                        android:text=" G "
+                        android:textColor="@color/titleItemSelColor"
+                        android:textSize="12sp" />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/g_value"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:background="@android:color/white"-->
-<!--                        android:textColor="@color/titleItemSelColor"-->
-<!--                        android:textSize="12sp"/>-->
-<!--                </LinearLayout>-->
+                    <TextView
+                        android:id="@+id/g_value"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/white"
+                        android:textColor="@color/titleItemSelColor"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -118,23 +119,32 @@
 
                     <TextView
                         android:id="@+id/a_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="15dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/cardBackgroundColor"
                         android:text=" A "
                         android:textColor="@color/titleItemSelColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/a_value"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@android:color/white"
                         android:textColor="@color/titleItemSelColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="3dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -144,22 +154,22 @@
 
                     <TextView
                         android:id="@+id/s_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="15dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/cardBackgroundColor"
                         android:text=" S "
                         android:textColor="@color/titleItemSelColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/s_value"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@android:color/white"
                         android:textColor="@color/titleItemSelColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -170,22 +180,22 @@
 
                     <TextView
                         android:id="@+id/c_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="15dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/cardBackgroundColor"
                         android:text=" c "
                         android:textColor="@color/titleItemSelColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/c_value"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@android:color/white"
                         android:textColor="@color/titleItemSelColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -196,22 +206,22 @@
 
                     <TextView
                         android:id="@+id/p_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="15dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/cardBackgroundColor"
                         android:text=" P "
                         android:textColor="@color/titleItemSelColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/p_value"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@android:color/white"
                         android:textColor="@color/titleItemSelColor"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -220,7 +230,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
-                android:layout_marginVertical="2dp"
+                android:layout_marginVertical="3dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -245,7 +255,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
-                android:layout_marginVertical="2dp"
+                android:layout_marginVertical="3dp"
                 android:orientation="horizontal">
 
                 <ImageView

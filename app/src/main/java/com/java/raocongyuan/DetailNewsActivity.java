@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.java.raocongyuan.backend.DataManager;
+import com.java.raocongyuan.backend.data.News;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
 public class DetailNewsActivity extends AppCompatActivity {
@@ -19,17 +21,22 @@ public class DetailNewsActivity extends AppCompatActivity {
     private ImageButton shareButton;
     private ShineButton starButton;
 
+    private DataManager manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_news);
 
+        manager = DataManager.getInstance(null);
+
         Intent intent = getIntent();
-        String newsId = intent.getStringExtra("news");
+        News news = (News)intent.getSerializableExtra("news");
 
         //TODO::backend::get news by ID
         //TODO::API
-        /*final News newsItem = new News(true);
+        /*
+        final News newsItem = manager.g;
 
         txtTitle = (TextView)findViewById(R.id.page_title);
         txtContent = (TextView)findViewById(R.id.page_content);
@@ -59,8 +66,8 @@ public class DetailNewsActivity extends AppCompatActivity {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(newsItem);
                 bottomSheetDialog.show(getSupportFragmentManager(), "bottomSheet");
             }
-        });*/
-
+        });
+*/
 
     }
 }

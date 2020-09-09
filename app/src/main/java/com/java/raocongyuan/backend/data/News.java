@@ -8,10 +8,12 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
+import java.io.Serializable;
+
 
 //@Fts4
 @Entity(indices = {@Index(value = "_id", unique = true), @Index(value = "type")})
-public class News {
+public class News implements Serializable {
     @PrimaryKey(autoGenerate = true)
     public int rowid;
     public String id;
