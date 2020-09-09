@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.java.raocongyuan.backend.data.Expert;
 
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
 
         //Log.d("check onBindViewHolder in ExpertListAdapter: ", "here "+position);
         if(!expert.avatar.equals("")){
-            if(expert.isPassedAway){
+            if(expert.is_passedaway){
                 ColorMatrix cm = new ColorMatrix();
                 cm.setSaturation(0); // 设置饱和度
                 ColorMatrixColorFilter grayColorFilter = new ColorMatrixColorFilter(cm);
@@ -103,25 +104,21 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
             holder.imageView.setVisibility(View.GONE);
         }
 
-        String temp;
-        if(expert.expert_name_zh.equals(""))
-            temp = " "+expert.expert_name+" ";
-        else
-            temp = " "+expert.expert_name_zh+" ";
+        String temp = " " + (expert.name_zh.isEmpty()? expert.name: expert.name_zh);
         holder.name_text.setText(temp);
 
-        if(expert.isPassedAway)
+        if(expert.is_passedaway)
             holder.name_text.setBackground(activity.getDrawable(R.drawable.textview_white_background_border));
         //TODO::front::the above works???
 
-        holder.position_text.setText(expert.position);
-        holder.affiliation_text.setText(expert.affiliation);
-        holder.h_value.setText(String.valueOf(expert.h_value));
-        holder.g_value.setText(String.valueOf(expert.g_value));
-        holder.a_value.setText(String.valueOf(expert.a_value));
-        holder.s_value.setText(String.valueOf(expert.s_value));
-        holder.c_value.setText(String.valueOf(expert.c_value));
-        holder.p_value.setText(String.valueOf(expert.p_value));
+        holder.position_text.setText(expert.profile.position);
+        holder.affiliation_text.setText(expert.profile.affiliation);
+        holder.h_value.setText(String.valueOf(expert.indices.hindex));
+        holder.g_value.setText(String.valueOf(expert.indices.gindex));
+        holder.a_value.setText(String.valueOf(expert.indices.activity));
+        holder.s_value.setText(String.valueOf(expert.indices.sociability));
+        holder.c_value.setText(String.valueOf(expert.indices.citations));
+        holder.p_value.setText(String.valueOf(expert.indices.pubs));
     }
 
     @Override

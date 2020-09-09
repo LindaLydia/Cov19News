@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.java.raocongyuan.backend.DataManager;
+import com.java.raocongyuan.backend.data.Expert;
 
 public class DetailExpertActivity extends AppCompatActivity {
 
@@ -53,7 +54,7 @@ public class DetailExpertActivity extends AppCompatActivity {
 
 
         if(!expert.avatar.equals("")){
-            if(expert.isPassedAway){
+            if(expert.is_passedaway){
                 ColorMatrix cm = new ColorMatrix();
                 cm.setSaturation(0); // 设置饱和度
                 ColorMatrixColorFilter grayColorFilter = new ColorMatrixColorFilter(cm);
@@ -66,31 +67,28 @@ public class DetailExpertActivity extends AppCompatActivity {
             imageView.setVisibility(View.GONE);
         }
 
-        String temp;
-        if(expert.expert_name_zh.equals(""))
-            temp = " "+expert.expert_name+" ";
-        else
-            temp = " "+expert.expert_name_zh+" ";
+        String temp = " " + (expert.name_zh.isEmpty()? expert.name: expert.name_zh);
         name_text.setText(temp);
 
-        if(expert.isPassedAway)
+        if(expert.is_passedaway)
             name_text.setBackground(getDrawable(R.drawable.textview_white_background_border));
         //TODO::front::the above works???
 
-        position_text.setText(expert.position);
-        affiliation_text.setText(expert.affiliation);
+        position_text.setText(expert.profile.position);
+        affiliation_text.setText(expert.profile.affiliation);
 
-        if(expert.bio.equals(""))
+        if(expert.profile.bio.equals(""))
             bio_card.setVisibility(View.GONE);
         else
-            bio_text.setText(expert.bio);
-        if(expert.edu.equals(""))
+            bio_text.setText(expert.profile.bio);
+        if(expert.profile.edu.equals(""))
             edu_card.setVisibility(View.GONE);
         else
-            edu_text.setText(expert.edu);
-        if(expert.work.equals(""))
+            edu_text.setText(expert.profile.edu);
+        System.out.println(expert.profile);
+        if(expert.profile.work.equals(""))
             work_card.setVisibility(View.GONE);
         else
-            work_text.setText(expert.work);
+            work_text.setText(expert.profile.work);
     }
 }

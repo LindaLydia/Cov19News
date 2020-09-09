@@ -49,6 +49,16 @@ public class ExpertWorker extends Worker {
                 throws JsonParseException {
             Gson gson = new Gson();
             Expert expert = gson.fromJson(json, Expert.class);
+            if(expert.profile.affiliation == null)
+                expert.profile.affiliation = "";
+            if(expert.profile.bio == null)
+                expert.profile.bio = "";
+            if(expert.profile.edu == null)
+                expert.profile.edu = "";
+            if(expert.profile.position == null)
+                expert.profile.position = "";
+            if(expert.profile.work == null)
+                expert.profile.work = "";
             expert.profile.bio = expert.profile.bio.replaceAll("<br>", "\n");
             return expert;
         }

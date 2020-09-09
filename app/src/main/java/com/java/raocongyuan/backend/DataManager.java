@@ -1,9 +1,7 @@
 package com.java.raocongyuan.backend;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.java.raocongyuan.Expert;
 import com.java.raocongyuan.backend.data.Epidemic;
 import com.java.raocongyuan.backend.data.News;
 import com.java.raocongyuan.backend.worker.*;

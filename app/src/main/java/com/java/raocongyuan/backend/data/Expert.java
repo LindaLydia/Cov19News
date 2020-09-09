@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Expert implements Serializable {
-    public static class Profile {
+    public static class Profile implements Serializable {
         public String affiliation;
         public String bio;
         public String edu;
@@ -30,16 +30,16 @@ public class Expert implements Serializable {
         }
     }
 
-    public static class Indice {
-        float activity;
-        int citations;
-        float diversity;
-        int gindex;
-        int hindex;
-        float newStar;
-        int pubs;
-        float risingStar;
-        float sociability;
+    public static class Indice implements Serializable {
+        public float activity;
+        public int citations;
+        public float diversity;
+        public int gindex;
+        public int hindex;
+        public float newStar;
+        public int pubs;
+        public float risingStar;
+        public float sociability;
 
         @NotNull
         @Override
@@ -57,11 +57,13 @@ public class Expert implements Serializable {
                     '}';
         }
     }
+    public String avatar;
     public String id;
     public String name;
     public String name_zh;
     public Indice indices;
     public Profile profile;
+    public boolean is_passedaway;
 
     @Override
     public String toString() {
