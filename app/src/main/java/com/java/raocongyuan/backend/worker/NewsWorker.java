@@ -135,12 +135,12 @@ public class NewsWorker extends Worker {
                         page += 1;
                     }
                     long stop = System.currentTimeMillis();
-                    Log.d(TAG, "Cost " + (stop - start) + " ms");
+                    Log.d(TAG, "Worker " + type + " Cost " + (stop - start) + " ms");
                 } catch (InterruptedException | MalformedURLException e) {
                     e.printStackTrace();
                 }
             }
-            Log.d(TAG, "run: Work for " + type + " terminated.");
+            Log.d(TAG, "Done: Worker for " + type + " terminated.");
             if(init)
                 break;
             synchronized (this) {

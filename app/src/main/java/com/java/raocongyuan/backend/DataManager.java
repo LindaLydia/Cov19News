@@ -3,6 +3,7 @@ package com.java.raocongyuan.backend;
 import android.content.Context;
 import android.util.Log;
 
+import com.java.raocongyuan.Expert;
 import com.java.raocongyuan.backend.data.Epidemic;
 import com.java.raocongyuan.backend.data.News;
 import com.java.raocongyuan.backend.worker.*;
@@ -18,6 +19,7 @@ public class DataManager {
     HashMap<String, NewsWorker> newsWorkers = new HashMap<>();
     EpidemicWorker epidemicWorker;
     EntityWorker entityWorker;
+    ExpertWorker expertWorker;
 
     AppDataBase db;
 
@@ -38,6 +40,8 @@ public class DataManager {
         epidemicWorker.start();
         entityWorker = new EntityWorker(this);
         entityWorker.start();
+        expertWorker = new ExpertWorker(this);
+        expertWorker.start();
     }
 
     static public synchronized DataManager getInstance(Context context) {
@@ -97,8 +101,9 @@ public class DataManager {
     }
 
     public void updateNews(String type, Consumer<Boolean> callback) {
+
         CompletableFuture<Boolean> cf = CompletableFuture.supplyAsync(() -> {
-            News news = db.newsDao().selectLatestByType(type);
+            News news = type.equals("all")? db.newsDao().selectLatest(): db.newsDao().selectLatestByType(type);
             NewsWorker worker = newsWorkers.getOrDefault(type, null);
             if (worker == null) {
                 worker = new NewsWorker(this, type, false);
@@ -109,7 +114,7 @@ public class DataManager {
             News newNews;
             synchronized (worker) {
                 // Wait for worker to finish first page
-                newNews = db.newsDao().selectLatestByType(type);
+                newNews = type.equals("all")? db.newsDao().selectLatest(): db.newsDao().selectLatestByType(type);
             }
             return news.rowid == newNews.rowid;
         });
@@ -122,7 +127,11 @@ public class DataManager {
 
     public void getNews(String type, int limit, String lastId, Consumer<List<News>> callback) {
         CompletableFuture<List<News>> cf = CompletableFuture.supplyAsync(() ->
-                lastId == null ? db.newsDao().selectByNumberType(limit, 0, type) : db.newsDao().selectEarlierByType(limit, lastId, type)
+                type.equals("all")?
+                        (lastId == null ?
+                                db.newsDao().selectByNumber(limit, 0) : db.newsDao().selectEarlier(limit, lastId) ):
+                        (lastId == null ?
+                                db.newsDao().selectByNumberType(limit, 0, type) : db.newsDao().selectEarlierByType(limit, lastId, type))
         );
         cf.thenAccept(callback);
         cf.exceptionally(e -> {
@@ -133,6 +142,14 @@ public class DataManager {
 
     public void searchEntities(String keyword, EntityWorker.Callback callback) {
         CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> entityWorker.setKeyword(keyword, callback));
+        cf.exceptionally(e -> {
+            e.printStackTrace();
+            return null;
+        });
+    }
+
+    public void getExperts(boolean needUpdate, ExpertWorker.Callback callback) {
+        CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> expertWorker.getData(needUpdate, callback));
         cf.exceptionally(e -> {
             e.printStackTrace();
             return null;

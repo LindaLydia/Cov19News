@@ -49,19 +49,6 @@ public class News implements Serializable {
     public News() {
 
     }
-
-    /*News(String id, String title, String data, String time, String source,
-         String content, String preview) {
-        this.id = id;
-        this.title = title;
-        this.date = data;
-        this.time = time;
-        this.source = source;
-        this.content = content;
-        this.preview = preview;
-        liked = false;
-        read = false;
-    }*/
 }
 
 

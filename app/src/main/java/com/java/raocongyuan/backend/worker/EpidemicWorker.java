@@ -1,10 +1,6 @@
 package com.java.raocongyuan.backend.worker;
 
-import android.annotation.SuppressLint;
-import android.os.PersistableBundle;
 import android.util.Log;
-
-import androidx.annotation.StyleableRes;
 
 import com.java.raocongyuan.backend.DataManager;
 import com.java.raocongyuan.backend.data.Epidemic;
@@ -16,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;

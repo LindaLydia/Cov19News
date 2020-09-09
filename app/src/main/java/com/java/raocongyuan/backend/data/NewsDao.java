@@ -24,6 +24,13 @@ public interface NewsDao {
     @Query("SELECT * FROM news WHERE type = :type AND _id < :id ORDER BY _ID DESC LIMIT :limit")
     List<News> selectEarlierByType(int limit, String id, String type);
 
+    @Query("SELECT * FROM news ORDER BY _id DESC LIMIT 1")
+    News selectLatest();
+
+    @Query("SELECT * FROM news WHERE _id < :id ORDER BY _ID DESC LIMIT :limit")
+    List<News> selectEarlier(int limit, String id);
+
+
     @Insert
     void insertAll(News... news);
 
