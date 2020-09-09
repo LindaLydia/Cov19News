@@ -33,6 +33,8 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,7 +116,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        System.out.print("onCreateView() for NewsListView\n");
+        //System.out.print("onCreateView() for NewsListView\n");
         choices = TopMenuChoice.getChoice();
 
         currentNewsList = new ArrayList<News>();
@@ -204,11 +206,6 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
 
     private List<News> getNewsList(){
         //TODO: for backend: an interface providing all the news presented in the news list
-        //temporary code for test
-        //currentNewsList.clear();
-        /*if(currentNewsList.size()==0)
-            for(int in = 0; in < 10; in++)
-                currentNewsList.add(new News(in));*/
         ////////////////currentNewsList = API_RETURN;
         return currentNewsList;
     }
@@ -230,7 +227,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         refreshLayout.setRefreshFooter(new ClassicsFooter(getActivity()));
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
+            public void onRefresh(@NotNull RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
                 //TODO::backend::An API for updating news
                 /*currentNewsList.add(0,new News("update"));
@@ -240,7 +237,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoadMore(RefreshLayout refreshlayout) {
+            public void onLoadMore(@NotNull RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
                 //TODO::backend::An API for loading more news
                 /*currentNewsList.add(new News("load more"));
@@ -310,12 +307,12 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         selectedChannel = choices.get(0);
         //adapter.notifyDataSetChanged();
 
-        manager.getNews("news", 20, null, (newsList) -> {
+        manager.getNews(selectedChannel, 20, null, (newsList) -> {
             currentNewsList = newsList;
-            Log.d("getNews", "setTopView: " + newsList.size());
+            //Log.d("getNews", "setTopView: " + newsList.size());
             adapter.updateNews(currentNewsList);
             adapter.notifyDataSetChanged();
-            Log.d("notify", "setTopView: " + adapter.getItemCount());
+            //Log.d("notify", "setTopView: " + adapter.getItemCount());
             recyclerView.setAdapter(adapter);
             viewPager.setCurrentItem(0);
         });
@@ -329,7 +326,17 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             case CHANNELREQUEST:
                 if(resultCode == CHANNELRESULT) {
                     setTopView();
+                    radioGroup.check(0);
                     viewPager.setCurrentItem(0);
+                    RadioButton rbButton = (RadioButton) radioGroup.getChildAt(0);
+                    int left = rbButton.getLeft();
+                    int width = rbButton.getMeasuredWidth();
+                    DisplayMetrics metrics = new DisplayMetrics();
+                    getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                    int screenWidth = metrics.widthPixels;
+                    int len = left + width / 2 - screenWidth / 2;
+                    hsv.smoothScrollTo(len, 0);
+                    selectedChannel = choices.get(0);
                 }
                 break;
             case NEWSPAESEARCHREQUEST:

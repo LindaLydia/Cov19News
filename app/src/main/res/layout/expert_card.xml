@@ -2,14 +2,250 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:layout_marginVertical="5dp"
-    android:layout_marginHorizontal="10dp"
+    android:layout_marginHorizontal="5dp"
     app:cardBackgroundColor="@android:color/white"
     app:cardElevation="3dp"
     app:cardCornerRadius="5dp">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="3dp"
+            android:layout_marginVertical="3dp">
+
+            <ImageView
+                android:id="@+id/expert_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:srcCompat="@tools:sample/avatars"
+                android:maxHeight="150dp"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="3dp"
+            android:layout_marginVertical="3dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/expert_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="2dp"
+                android:text="TextView"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="2dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="3dp" >
+                    <TextView
+                        android:id="@+id/h_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/titleItemSelColor"
+                        android:background="@drawable/textview_border"
+                        android:text="H" />
+
+                    <TextView
+                        android:id="@+id/h_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_white_background_border"
+                        android:textColor="@color/titleItemSelColor"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="3dp" >
+                    <TextView
+                        android:id="@+id/g_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/titleItemSelColor"
+                        android:background="@drawable/textview_border"
+                        android:text="G" />
+
+                    <TextView
+                        android:id="@+id/g_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_white_background_border"
+                        android:textColor="@color/titleItemSelColor"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="3dp">
+                    <TextView
+                        android:id="@+id/a_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/titleItemSelColor"
+                        android:background="@drawable/textview_border"
+                        android:text="A" />
+
+                    <TextView
+                        android:id="@+id/a_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_white_background_border"
+                        android:textColor="@color/titleItemSelColor"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="3dp">
+                    <TextView
+                        android:id="@+id/s_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/titleItemSelColor"
+                        android:background="@drawable/textview_border"
+                        android:text="S" />
+
+                    <TextView
+                        android:id="@+id/s_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_white_background_border"
+                        android:textColor="@color/titleItemSelColor"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="3dp">
+                    <TextView
+                        android:id="@+id/c_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/titleItemSelColor"
+                        android:background="@drawable/textview_border"
+                        android:text="c" />
+
+                    <TextView
+                        android:id="@+id/c_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_white_background_border"
+                        android:textColor="@color/titleItemSelColor"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="3dp">
+                    <TextView
+                        android:id="@+id/p_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/titleItemSelColor"
+                        android:background="@drawable/textview_border"
+                        android:text="P" />
+
+                    <TextView
+                        android:id="@+id/p_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_white_background_border"
+                        android:textColor="@color/titleItemSelColor"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="2dp">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/transparent"
+                    app:srcCompat="@drawable/ic_briefcase" />
+
+                <TextView
+                    android:id="@+id/breifcase_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginHorizontal="2dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="2dp">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/transparent"
+                    app:srcCompat="@drawable/ic_institution"
+                    android:layout_marginHorizontal="2dp" />
+
+                <TextView
+                    android:id="@+id/institution_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_marginHorizontal="2dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
