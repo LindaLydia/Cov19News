@@ -216,7 +216,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         // currentNewsList.get(position).setRead();
         Intent intent;
         intent = new Intent(this.getActivity(), DetailNewsActivity.class);
-        intent.putExtra("NewsId",currentNewsList.get(position)._id);
+        intent.putExtra("news",currentNewsList.get(position));
         startActivity(intent);
     }
 
