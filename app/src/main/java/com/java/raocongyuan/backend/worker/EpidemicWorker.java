@@ -102,7 +102,6 @@ public class EpidemicWorker extends Worker {
                         }.getType();
                         Map<String, AreaData> result = gson.fromJson(s, collectionType);
                         deserialize(result);
-                        domestic.forEach(e -> System.out.println(e.confirmed));
                     }
                     long stop = System.currentTimeMillis();
                     Log.d(TAG, "run: Cost " + (stop - start) + " ms");
@@ -110,7 +109,7 @@ public class EpidemicWorker extends Worker {
                     e.printStackTrace();
                 }
                 try {
-                    wait(5 * 60 * 1000);
+                    this.wait(5 * 60 * 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

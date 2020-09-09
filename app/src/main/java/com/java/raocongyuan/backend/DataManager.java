@@ -7,18 +7,18 @@ import com.java.raocongyuan.backend.data.Epidemic;
 import com.java.raocongyuan.backend.data.News;
 import com.java.raocongyuan.backend.worker.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 
 public class DataManager {
     HashMap<String, NewsWorker> newsWorkers = new HashMap<>();
     EpidemicWorker epidemicWorker;
+    EntityWorker entityWorker;
+
     AppDataBase db;
 
     // Epidemic data just in memory
@@ -36,6 +36,8 @@ public class DataManager {
         }
         epidemicWorker = new EpidemicWorker(this);
         epidemicWorker.start();
+        entityWorker = new EntityWorker(this);
+        entityWorker.start();
     }
 
     static public synchronized DataManager getInstance(Context context) {
@@ -123,6 +125,14 @@ public class DataManager {
                 lastId == null ? db.newsDao().selectByNumberType(limit, 0, type) : db.newsDao().selectEarlierByType(limit, lastId, type)
         );
         cf.thenAccept(callback);
+        cf.exceptionally(e -> {
+            e.printStackTrace();
+            return null;
+        });
+    }
+
+    public void searchEntities(String keyword, EntityWorker.Callback callback) {
+        CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> entityWorker.setKeyword(keyword, callback));
         cf.exceptionally(e -> {
             e.printStackTrace();
             return null;

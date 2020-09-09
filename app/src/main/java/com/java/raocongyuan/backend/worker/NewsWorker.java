@@ -129,9 +129,9 @@ public class NewsWorker extends Worker {
                             }
                         } catch (IOException e) {
                             Log.d(TAG, "run: Network Error, just waiting for 3 second");
-                            wait(3000);
+                            this.wait(3000);
                         }
-                        wait(10);
+                        this.wait(10);
                         page += 1;
                     }
                     long stop = System.currentTimeMillis();
@@ -145,7 +145,7 @@ public class NewsWorker extends Worker {
                 break;
             synchronized (this) {
                 try {
-                    wait(5 * 60 * 1000);
+                    this.wait(5 * 60 * 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
