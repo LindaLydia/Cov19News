@@ -1,6 +1,7 @@
 package com.java.raocongyuan.backend;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.java.raocongyuan.backend.data.Epidemic;
 import com.java.raocongyuan.backend.data.News;
@@ -108,7 +109,7 @@ public class DataManager {
                         newsWorkers.put(_type, worker);
                         worker.start();
                     } else {
-                        worker.notify();
+                        worker.notifyAll();
                     }
                 });
                 try {
@@ -128,6 +129,7 @@ public class DataManager {
     }
 
     public void getNews(String type, int limit, String lastId, Consumer<List<News>> callback) {
+        Log.d("getNews", "getNews before " + lastId);
         CompletableFuture<List<News>> cf = CompletableFuture.supplyAsync(() -> db.newsDao().selectNews(
                 limit, lastId == null ? maxId : lastId, makeTypes(type)));
         cf.thenAccept(callback);
