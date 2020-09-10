@@ -10,9 +10,9 @@ import java.util.List;
 
 public class Entity {
     public class Relation {
-        boolean forward;
-        String label;
-        String relation;
+        public boolean forward;
+        public String label;
+        public String relation;
 
         @NotNull
         @Override

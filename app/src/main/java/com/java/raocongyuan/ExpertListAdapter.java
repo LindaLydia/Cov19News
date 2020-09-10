@@ -89,6 +89,10 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
     public void onBindViewHolder(@NonNull ExpertListViewHolder holder, final int position){
         final Expert expert = expertList.get(position);
 
+        if(expert.name_zh.equals("钟南山")) {
+            Log.d("ExpertListAdapter", "onBindViewHolder: " + expert.is_passedaway);
+        }
+
         //Log.d("check onBindViewHolder in ExpertListAdapter: ", "here "+position);
         if(!expert.avatar.equals("")){
             if(expert.is_passedaway){
@@ -123,6 +127,6 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
 
     @Override
     public int getItemCount(){
-        return expertList.size();
+        return expertList == null? 0: expertList.size();
     }
 }

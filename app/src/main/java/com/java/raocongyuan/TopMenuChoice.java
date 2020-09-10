@@ -8,7 +8,7 @@ public class TopMenuChoice {
     static {
         choice.add("all");
         choice.add("news");
-        choice.add("papers");
+        choice.add("paper");
     }
 
     public static ArrayList<String> getChoice() {

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DataManager.getInstance(getApplicationContext());
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//ask for the width of the window, must placed before adding content
         setContentView(R.layout.activity_main);
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         //initialize the view for this activity
         this.initView();
 
-        DataManager.getInstance(getApplicationContext());
     }
 
     private void initTabLine() {

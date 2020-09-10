@@ -1,5 +1,6 @@
 package com.java.raocongyuan;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -95,6 +98,7 @@ public class StatisticsFragment extends Fragment {
 
     private DataManager manager;
 
+    private Handler handler;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -132,52 +136,56 @@ public class StatisticsFragment extends Fragment {
         manager = DataManager.getInstance(null);
     }
 
+    @SuppressLint("HandlerLeak")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         this.inflater = inflater;
         this.view = inflater.inflate(R.layout.fragment_statistics, container, false);
 
+        line_chart = view.findViewById(R.id.line_chart_for_trend);
+        bar_chart = view.findViewById(R.id.bar_char_for_total);
+
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                if(msg.obj instanceof String){
+                    if(msg.obj.equals("Done")){
+                        Log.d("in handler", "handleMessage: gotton data");
+                        Log.d("in get_message", domestic_epidemic.toString()+"---"+international_epidemic.toString());
+                        init();
+                        Log.d("statistics init", "init: domestic");
+                    }
+                }
+            }
+        };
+
         manager.getDomestic(25,(domestic_data) -> {
+            Log.d("into get data", "onCreateView: ");
             domestic_epidemic = domestic_data;
-            init();
-            bar_chart.notifyDataSetChanged();
-            bar_chart.invalidate();
-            line_chart.notifyDataSetChanged();
-            line_chart.invalidate();
-        });
-        manager.getInternational(25,(international_data) -> {
-            international_epidemic = international_data;
-            init();
-            bar_chart.notifyDataSetChanged();
-            bar_chart.invalidate();
-            line_chart.notifyDataSetChanged();
-            line_chart.invalidate();
+            manager.getInternational(25,(international_data) -> {
+                international_epidemic = international_data;
+                Message msg = new Message();
+                msg.obj = "Done";
+                handler.sendMessage(msg);
+                Log.d("in call back", domestic_epidemic.toString()+"---"+international_epidemic.toString());
+            });
         });
 
         //TODO::front::delete the below fake data
 
         toggleButton = view.findViewById(R.id.area_switch_button);
-        line_chart = view.findViewById(R.id.line_chart_for_trend);
-        bar_chart = view.findViewById(R.id.bar_char_for_total);
         toggleButton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 toggleButton.setChecked(isChecked);
                 isInternational = isChecked;
                 if (isInternational) {
-                    manager.getDomestic(10, (epidemicList) -> {
-                        //TODO::front::save data
-                        SetBarChart(international_epidemic, isInternational);
-                        SetLineChart(isInternational, 0);
-                    });
+                    SetBarChart(international_epidemic, isInternational);
+                    SetLineChart(isInternational, 0);
                 } else {
-                    manager.getInternational(10, (epidemicList) -> {
-                        //TODO::front::save data
-                        SetBarChart(domestic_epidemic, isInternational);
-                        SetLineChart(isInternational, 0);
-                    });
+                    SetBarChart(domestic_epidemic, isInternational);
+                    SetLineChart(isInternational, 0);
                 }
-
             }
 
         });
@@ -189,11 +197,11 @@ public class StatisticsFragment extends Fragment {
         //TODO::backend and front::get data with parameter isInternational
         //TODO::line_data, start_date, bar_data
 
+        Log.d("in call back", domestic_epidemic.toString()+"---"+international_epidemic.toString());
         //initialize the properties for bar-chart
         initChart();
 
         //initialize the data
-        isInternational = false;
         SetBarChart(domestic_epidemic, isInternational);
         SetLineChart(isInternational,0);
 
@@ -499,10 +507,13 @@ public class StatisticsFragment extends Fragment {
 
         LineDataSet linedataset1 = new LineDataSet(confirmed_data, "CONFIRMED");
         linedataset1.setColor(Color.rgb(234, 139, 0));
+        linedataset1.setDrawCircles(false);
         LineDataSet linedataset2 = new LineDataSet(cured_data, "CURED");
         linedataset2.setColor(Color.rgb(48, 190, 48));
+        linedataset2.setDrawCircles(false);
         LineDataSet linedataset3 = new LineDataSet(dead_data, "DEAD");
         linedataset3.setColor(Color.rgb(200, 0, 0));
+        linedataset3.setDrawCircles(false);
 
         line_chart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
             @Override

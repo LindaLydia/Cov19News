@@ -28,7 +28,7 @@ public class Entity {
     private String picture;//API::img, can be "null"
     private String definition;//API::, can be "null"
     //Map<name_of_anthor_entity(API::relations-label),relationship>
-    private LinkedHashMap<String,RelationshipDescription> relations = new LinkedHashMap<String,RelationshipDescription>();
+    private List<com.java.raocongyuan.backend.data.Entity.Relation> relations = new ArrayList<com.java.raocongyuan.backend.data.Entity.Relation>();
     //Map<type_of_property,description>
     private LinkedHashMap<String,String> properties = new LinkedHashMap<String,String>();
 
@@ -42,7 +42,7 @@ public class Entity {
     int extention_type = Entity.ITEM_TYPE_ENTITY;
 
     //TODO::backend::fill in the data
-    Entity(String name, String url, String definition, LinkedHashMap<String,RelationshipDescription> relations, LinkedHashMap<String,String> properties){
+    Entity(String name, String url, String definition, List<com.java.raocongyuan.backend.data.Entity.Relation> relations, LinkedHashMap<String,String> properties){
         this.name = name;
         this.picture = url;//can be "null"
         this.definition = definition;
@@ -59,15 +59,14 @@ public class Entity {
 
     private void ProcessRelations(){
         processed_relations = new LinkedHashMap<String,String>();
-        for(LinkedHashMap.Entry<String,RelationshipDescription> e : relations.entrySet()){
-            String key = e.getKey();
+        for(com.java.raocongyuan.backend.data.Entity.Relation r : relations){
+            String key = r.label;
             String temp;
-            boolean forward = e.getValue().belongsTo;
-            if(forward){
-                temp = " ←← " + e.getValue().noun;
+            if(r.forward){
+                temp = " ←← " + r.relation;
             }
             else{
-                temp = " →→ " + e.getValue().noun;
+                temp = " →→ " + r.relation;
             }
             processed_relations.put(key,temp);
         }
