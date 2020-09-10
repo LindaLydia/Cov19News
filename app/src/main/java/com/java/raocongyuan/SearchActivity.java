@@ -30,10 +30,11 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void SearchAciton(String string) {
                 NewsListFragment.search_key = string;
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                setResult(NewsListFragment.NEWSPAESEARCHRESULT, intent);
+                //TODO::front::add searching logic
+                //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                //setResult(NewsListFragment.NEWSPAESEARCHRESULT, intent);
                 //Log.d("search text", string);
-                finish();
+                //finish();
             }
         });
 

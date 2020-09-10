@@ -132,6 +132,26 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         this.inflater = inflater;
         view = inflater.inflate(R.layout.fragment_news_list, container, false);
 
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                if(msg.obj instanceof String){
+                    if(msg.obj.equals("Done")){
+                        adapter.updateNews(currentNewsList);
+                        if(msg.arg1!=-1)
+                            adapter.notifyDataSetChanged();
+                        else
+                            adapter.notifyItemRangeChanged(msg.arg2,20);
+                        //Log.d("notify", "setTopView: " + adapter.getItemCount());
+                        recyclerView.setAdapter(adapter);
+                        if(msg.arg1!=-1)
+                            viewPager.setCurrentItem(msg.arg1);
+                        //Log.d("news init", "init: at (0)");
+                    }
+                }
+            }
+        };
+
         //always loading data before until it's not null
         CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> {
             while(true) {
@@ -152,26 +172,6 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             e.printStackTrace();
             return null;
         });
-
-        handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg){
-                if(msg.obj instanceof String){
-                    if(msg.obj.equals("Done")){
-                        adapter.updateNews(currentNewsList);
-                        if(msg.arg1!=-1)
-                            adapter.notifyDataSetChanged();
-                        else
-                            adapter.notifyItemRangeChanged(msg.arg2,20);
-                        //Log.d("notify", "setTopView: " + adapter.getItemCount());
-                        recyclerView.setAdapter(adapter);
-                        if(msg.arg1!=-1)
-                            viewPager.setCurrentItem(msg.arg1);
-                        //Log.d("news init", "init: at (0)");
-                    }
-                }
-            }
-        };
 
         search_text = (TextView)view.findViewById(R.id.news_start_text);
         search_button = (ImageButton)view.findViewById(R.id.search_Button);
