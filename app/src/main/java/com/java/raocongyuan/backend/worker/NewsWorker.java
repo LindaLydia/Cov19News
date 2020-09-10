@@ -126,13 +126,13 @@ public class NewsWorker extends Worker {
                                         existId.compareTo(news._id) < 0 && news._id.compareTo(oldestId) < 0).toArray(News[]::new));
                                 count += result.data.size();
                                 lastTotal = total;
+                                page += 1;
                             }
                         } catch (IOException e) {
                             Log.d(TAG, "run: Network Error, just waiting for 3 second");
                             this.wait(3000);
                         }
                         this.wait(10);
-                        page += 1;
                     }
                     long stop = System.currentTimeMillis();
                     Log.d(TAG, "Worker " + type + " Cost " + (stop - start) + " ms");
