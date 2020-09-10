@@ -152,6 +152,27 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             }
         };
 
+        //always loading data before until it's not null
+        CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> {
+            while(true) {
+                if(currentNewsList!=null){
+                    Message msg = new Message();
+                    msg.obj = "Done";
+                    handler.sendMessage(msg);
+                    break;
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        cf.exceptionally((e) -> {
+            e.printStackTrace();
+            return null;
+        });
+
         search_text = (TextView)view.findViewById(R.id.news_start_text);
         search_button = (ImageButton)view.findViewById(R.id.search_Button);
         search_button.setOnClickListener(new View.OnClickListener() {
@@ -306,22 +327,6 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         }
         radioGroup.check(0);
         setHSV(0);
-
-        CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> {
-            while(true) {
-                if(currentNewsList!=null)
-                    break;
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        cf.exceptionally((e) -> {
-            e.printStackTrace();
-            return null;
-        });
 
         manager.getNews(selectedChannel, 20, null, (newsList) -> {
             currentNewsList = newsList;
