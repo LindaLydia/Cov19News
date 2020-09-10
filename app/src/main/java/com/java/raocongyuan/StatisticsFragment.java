@@ -382,7 +382,7 @@ public class StatisticsFragment extends Fragment {
         XAxis line_xAxis = line_chart.getXAxis();
         line_xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         line_xAxis.setAxisMinimum(0f);
-        line_xAxis.setGranularity(1f);
+        //line_xAxis.setGranularity(1f);
         line_xAxis.setCenterAxisLabels(false);//label in center
 
         //y-axis (double side)
@@ -480,6 +480,7 @@ public class StatisticsFragment extends Fragment {
 
     private void SetLineChart(boolean isInternational, int position) {
         Epidemic e;
+        Description description = new Description();
         if(isInternational){
             if(international_epidemic==null){
                 Toast toast = Toast.makeText(getContext(),"当前网络不畅，(⊙x⊙;)您真的联网了吗 orz",Toast.LENGTH_LONG);
@@ -487,6 +488,7 @@ public class StatisticsFragment extends Fragment {
                 return;
             }
             e = international_epidemic.get(position);
+            description.setText(e.country);
         }
         else{
             if(domestic_epidemic==null){
@@ -495,7 +497,9 @@ public class StatisticsFragment extends Fragment {
                 return;
             }
             e = domestic_epidemic.get(position);
+            description.setText(e.province);
         }
+        line_chart.setDescription(description);
 
         List<Integer> confirmed_trend = e.confirmed;
         List<Integer> cured_trend = e.cured;
