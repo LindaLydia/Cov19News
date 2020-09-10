@@ -39,6 +39,7 @@ import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.java.raocongyuan.backend.DataManager;
+import com.java.raocongyuan.backend.data.Epidemic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,11 +81,17 @@ public class StatisticsFragment extends Fragment {
     private boolean isInternational = false;
 
     //TODO::data gotten from backend
+    private List<Epidemic> domestic_epidemic;
+    private List<Epidemic> international_epidemic;
+    private Map<String, AccumulativeStatistics> bar_data = new LinkedHashMap<String, AccumulativeStatistics>();
+    private Map<String, List<Integer>> line_data = new HashMap<String, List<Integer>>();
+    /*
     //Map<CONFIRMED||CURED||DEAD,List<series of everyday data, accumulative>>, make sure the 3 list are of the same length
     private Map<String, List<Integer>> line_data = new HashMap<String, List<Integer>>();
     private String start_date;
     //Map<Country||Province,AccumulativeStatistics(3 Integer)>
     private Map<String, AccumulativeStatistics> bar_data = new LinkedHashMap<String, AccumulativeStatistics>();
+    */
 
     private DataManager manager;
 
@@ -131,20 +138,24 @@ public class StatisticsFragment extends Fragment {
         this.inflater = inflater;
         this.view = inflater.inflate(R.layout.fragment_statistics, container, false);
 
+        manager.getDomestic(25,(domestic_data) -> {
+            domestic_epidemic = domestic_data;
+            init();
+            bar_chart.notifyDataSetChanged();
+            bar_chart.invalidate();
+            line_chart.notifyDataSetChanged();
+            line_chart.invalidate();
+        });
+        manager.getInternational(25,(international_data) -> {
+            international_epidemic = international_data;
+            init();
+            bar_chart.notifyDataSetChanged();
+            bar_chart.invalidate();
+            line_chart.notifyDataSetChanged();
+            line_chart.invalidate();
+        });
+
         //TODO::front::delete the below fake data
-        AccumulativeStatistics a1 = new AccumulativeStatistics(200, 132, 23);
-        AccumulativeStatistics a2 = new AccumulativeStatistics(300, 192, 72);
-        AccumulativeStatistics a3 = new AccumulativeStatistics(400, 93, 31);
-        AccumulativeStatistics a4 = new AccumulativeStatistics(500, 63, 419);
-        bar_data.clear();
-        bar_data.put("place1", a1);
-        bar_data.put("place2", a2);
-        bar_data.put("place3", a3);
-        bar_data.put("place4", a4);
-        line_data.clear();
-        line_data.put("CONFIRMED", new ArrayList<Integer>(Arrays.asList(62, 137, 200)));
-        line_data.put("CURED", new ArrayList<Integer>(Arrays.asList(47, 56, 132)));
-        line_data.put("DEAD", new ArrayList<Integer>(Arrays.asList(3, 18, 23)));
 
         toggleButton = view.findViewById(R.id.area_switch_button);
         line_chart = view.findViewById(R.id.line_chart_for_trend);
@@ -156,14 +167,14 @@ public class StatisticsFragment extends Fragment {
                 if (isInternational) {
                     manager.getDomestic(10, (epidemicList) -> {
                         //TODO::front::save data
-                        SetBarChart();
-                        SetLineChart();
+                        SetBarChart(international_epidemic, isInternational);
+                        SetLineChart(isInternational, 0);
                     });
                 } else {
                     manager.getInternational(10, (epidemicList) -> {
                         //TODO::front::save data
-                        SetBarChart();
-                        SetLineChart();
+                        SetBarChart(domestic_epidemic, isInternational);
+                        SetLineChart(isInternational, 0);
                     });
                 }
 
@@ -171,7 +182,6 @@ public class StatisticsFragment extends Fragment {
 
         });
         toggleButton.setChecked(isInternational);//automatic false and display the domestic statistics
-        init();
         return view;
     }
 
@@ -183,8 +193,9 @@ public class StatisticsFragment extends Fragment {
         initChart();
 
         //initialize the data
-        SetBarChart();
-        SetLineChart();
+        isInternational = false;
+        SetBarChart(domestic_epidemic, isInternational);
+        SetLineChart(isInternational,0);
 
         //bar_chart listener ---- for line chart
         bar_chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -195,22 +206,8 @@ public class StatisticsFragment extends Fragment {
                     Log.d("Entry e =", e.toString() + " -- e.getX() = " + e.getX());
                     float ix = e.getX();
                     if (Math.floor(ix) == ic) {
-                        String place_name = entry.getKey();
-                        Log.d("place_name", place_name);
                         //TODO::backend::get the trend-data for this place
-                        //line_data =
-                        //TODO::front::delete the fake statistics below
-                        line_data.clear();
-                        if (place_name == "place1") {
-                            line_data.put("CONFIRMED", new ArrayList<Integer>(Arrays.asList(62, 137, 200)));
-                            line_data.put("CURED", new ArrayList<Integer>(Arrays.asList(47, 56, 132)));
-                            line_data.put("DEAD", new ArrayList<Integer>(Arrays.asList(3, 18, 23)));
-                        } else if (place_name == "place2") {
-                            line_data.put("CONFIRMED", new ArrayList<Integer>(Arrays.asList(70, 164, 300)));
-                            line_data.put("CURED", new ArrayList<Integer>(Arrays.asList(13, 96, 192)));
-                            line_data.put("DEAD", new ArrayList<Integer>(Arrays.asList(16, 58, 72)));
-                        }
-                        SetLineChart();
+                        SetLineChart(isInternational, ic);
                         break;
                     } else {
                         ic++;
@@ -395,7 +392,19 @@ public class StatisticsFragment extends Fragment {
 
     }
 
-    private void SetBarChart() {
+    private void SetBarChart(List<Epidemic> raw_data, boolean isInternational) {
+        //Map<Country||Province,AccumulativeStatistics(3 Integer)>
+        bar_data.clear();
+        for(Epidemic e : raw_data){
+            String key;
+            if(isInternational)
+                key = e.country;
+            else
+                key = e.province;
+            AccumulativeStatistics value = new AccumulativeStatistics(e.confirmed.get(e.confirmed.size()-1),e.cured.get(e.cured.size()-1),e.dead.get(e.cured.size()-1));
+            bar_data.put(key,value);
+        }
+
         if (bar_data.size() == 0)
             return;
 
@@ -454,20 +463,16 @@ public class StatisticsFragment extends Fragment {
         bar_chart.setData(data);
     }
 
-    private void SetLineChart() {
-        //TODO::front::what if the Integer equals "null"
-        if (line_data.size() == 0) {
-            LineData data = new LineData();
-            line_chart.notifyDataSetChanged();
-            line_chart.invalidate();
-            line_chart.animateY(3000);
-            line_chart.setData(data);
-            return;
-        }
+    private void SetLineChart(boolean isInternational, int position) {
+        Epidemic e;
+        if(isInternational)
+            e = international_epidemic.get(position);
+        else
+            e = domestic_epidemic.get(position);
 
-        List<Integer> confirmed_trend = line_data.get("CONFIRMED");
-        List<Integer> cured_trend = line_data.get("CURED");
-        List<Integer> dead_trend = line_data.get("DEAD");
+        List<Integer> confirmed_trend = e.confirmed;
+        List<Integer> cured_trend = e.cured;
+        List<Integer> dead_trend = e.dead;
 
         if (confirmed_trend.size() == 0) {
             LineData data = new LineData();

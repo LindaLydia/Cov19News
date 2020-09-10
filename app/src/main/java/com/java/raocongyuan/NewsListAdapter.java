@@ -53,6 +53,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         private TextView txtTitle;
         private TextView txtAbstract;
         private TextView item_date_time;
+        private TextView txtSource;
         private ImageButton shareButton;
         private ShineButton starButton;
         private OnMenuItemListener onMenuItemListener;
@@ -64,6 +65,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
             txtTitle = v.findViewById(R.id.txtTitle);
             txtAbstract = v.findViewById(R.id.txtAbstract);
             item_date_time = v.findViewById(R.id.item_date_time);
+            txtSource = v.findViewById(R.id.source_text);
             shareButton = v.findViewById(R.id.item_share_button);
             starButton = v.findViewById(R.id.item_star_button);
             this.onMenuItemListener = onMenuItemListener;
@@ -118,6 +120,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         else
             holder.item_date_time.setVisibility(View.GONE);
 
+        holder.txtSource.setText(newsItem.source);
         //Pictures------no pictures
             /*if(newsItem.getPictures().size()!=0 && !newsItem.getPictures().get(0).equals("")){
                 Glide.with(activity).load(newsItem.getPictures().get(0)).into(holder.imgNews);
@@ -126,13 +129,13 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
                 holder.imgNews.setVisibility(View.GONE);*/
 
         //Start-Button
-            /*holder.starButton.setOnCheckStateChangeListener(new ShineButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(View view, boolean checked) {
-                    newsItem.chageLikeness();
-                }
-            });
-            holder.starButton.setChecked(newsItem.isLiked());*/
+        holder.starButton.setOnCheckStateChangeListener(new ShineButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(View view, boolean checked) {
+                newsItem.liked = !newsItem.liked;
+            }
+        });
+        holder.starButton.setChecked(newsItem.liked);
 
         final FragmentManager fragmentManager = this.fragmentManager;
         holder.shareButton.setOnClickListener(new View.OnClickListener() {
