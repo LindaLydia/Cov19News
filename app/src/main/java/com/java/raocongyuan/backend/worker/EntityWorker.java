@@ -3,6 +3,7 @@ package com.java.raocongyuan.backend.worker;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.java.raocongyuan.backend.DataManager;
@@ -95,6 +96,7 @@ public class EntityWorker extends Worker {
 
     public void setKeyword(String keyword, Callback callback) {
         // Firstly async interrupt thread to wait for next task and then sync set the task
+        Log.d("EntityWorker", "setKeyword: Try to interrupt");
         this.interrupt();
         _setKeyword(keyword, callback);
     }
@@ -142,7 +144,7 @@ public class EntityWorker extends Worker {
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException | JsonIOException e) {
                     // Don't execute callback if interrupted
                     Log.d(TAG, "run: getInterrupted");
                 }
