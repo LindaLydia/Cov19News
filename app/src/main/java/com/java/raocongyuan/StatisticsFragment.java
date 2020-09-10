@@ -376,6 +376,7 @@ public class StatisticsFragment extends Fragment {
         Matrix line_m = new Matrix();
         line_m.postScale(0.9f, 1f);//两个参数分别是x,y轴的缩放比例。例如：将x轴的数据放大为之前的1.5倍
         line_chart.getViewPortHandler().refresh(line_m, line_chart, false);//将图表动画显示之前进行缩放
+        line_chart.setDescription(description);
 
         //x-axis
         XAxis line_xAxis = line_chart.getXAxis();

@@ -14,9 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.java.raocongyuan.backend.data.News;
 
-import gdut.bsx.share2.Share2;
-import gdut.bsx.share2.ShareContentType;
-
 public class BottomSheetDialog extends BottomSheetDialogFragment {
     private News news;
 
@@ -39,13 +36,6 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 //dismiss();
-                new Share2.Builder(activity)
-                        .setContentType(ShareContentType.TEXT)
-                        .setTextContent(news.title.toString())
-                        .setShareToComponent("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI")
-                        .setTitle("Share Text to Moment")
-                        .build()
-                        .shareBySystem();
                 //TODO::backend or front??::prepare the things and invoke WeChat Moment
             }
         });
