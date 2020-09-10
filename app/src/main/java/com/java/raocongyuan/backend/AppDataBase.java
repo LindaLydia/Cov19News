@@ -22,7 +22,7 @@ public abstract class AppDataBase extends RoomDatabase {
     public static synchronized AppDataBase getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    AppDataBase.class, "db.sqlite3").build();
+                    AppDataBase.class, "db.sqlite3").createFromAsset("preset.db").build();
         }
         return instance;
     }

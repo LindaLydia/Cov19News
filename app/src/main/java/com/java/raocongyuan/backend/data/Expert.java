@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class Expert implements Serializable {
     public static class Profile implements Serializable {
@@ -77,6 +78,19 @@ public class Expert implements Serializable {
                 ", profile=" + profile +
                 ", is_passedaway=" + is_passedaway +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Expert expert = (Expert) o;
+        return id.equals(expert.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
 

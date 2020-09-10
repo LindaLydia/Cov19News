@@ -26,6 +26,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ExpertWorker extends Worker {
@@ -121,7 +122,7 @@ public class ExpertWorker extends Worker {
                             if (!result.message.equals("success")) {
                                 Log.d(TAG, "result.msg: " + result.message);
                             }
-                            experts = result.data;
+                            experts = result.data.stream().distinct().collect(Collectors.toList());
                             callback.execute(experts);
                         }
                     } catch (IOException e) {
