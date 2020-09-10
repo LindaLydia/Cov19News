@@ -112,8 +112,8 @@ public class ExpertWorker extends Worker {
                     long start = System.currentTimeMillis();
                     try {
                         URLConnection connection = url.openConnection();
-                        connection.setConnectTimeout(2000);
-                        connection.setReadTimeout(2000);
+                        connection.setConnectTimeout(5000);
+                        connection.setReadTimeout(5000);
                         try (InputStreamReader stream = new InputStreamReader(connection.getInputStream())) {
                             Response result = gsonBuilder.create().fromJson(stream, Response.class);
                             long stop = System.currentTimeMillis();

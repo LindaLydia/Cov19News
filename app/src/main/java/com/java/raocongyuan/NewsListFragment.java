@@ -124,25 +124,8 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         this.inflater = inflater;
         view = inflater.inflate(R.layout.fragment_news_list, container, false);
 
-        radioGroup = (RadioGroup) view.findViewById(R.id.top_radioGroup);
-        hsv = (HorizontalScrollView) view.findViewById(R.id.news_scroll);
-        viewPager = (ViewPager) view.findViewById(R.id.news_view_pager);
         search_text = (TextView)view.findViewById(R.id.news_start_text);
         search_button = (ImageButton)view.findViewById(R.id.search_Button);
-
-        setTopView();
-
-        manager.getNews(selectedChannel, 20, null, (newsList) -> {
-            currentNewsList = newsList;
-
-        });
-
-        adapter = new NewsListAdapter(getNewsList(), this.getActivity(),this.getFragmentManager(),this);
-        adapter.notifyDataSetChanged();
-        layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false);
-        recyclerView = (RecyclerView)view.findViewById(R.id.news_list);
-
-
         search_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -152,6 +135,9 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             }
         });
 
+        radioGroup = (RadioGroup) view.findViewById(R.id.top_radioGroup);
+        hsv = (HorizontalScrollView) view.findViewById(R.id.news_scroll);
+        viewPager = (ViewPager) view.findViewById(R.id.news_view_pager);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 //TODO::backend::get news by sort, and present them
                 //TODO::front::present the returned news
@@ -182,16 +168,11 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             }
         });
 
-        /*
-        manager.getNews("news", 20, null, (newsList) -> {
-            currentNewsList = newsList;
-            //Log.d("getNews", "setTopView: " + newsList.size());
-            adapter.updateNews(currentNewsList);
-            adapter.notifyDataSetChanged();
-            //Log.d("notify", "setTopView: " + adapter.getItemCount());
-            recyclerView.setAdapter(adapter);
-            viewPager.setCurrentItem(0);
-        });*/
+        adapter = new NewsListAdapter(getNewsList(), this.getActivity(),this.getFragmentManager(),this);
+        layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false);
+        recyclerView = (RecyclerView)view.findViewById(R.id.news_list);
+
+        setTopView();
 
         viewPager.setCurrentItem(0);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -225,6 +206,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
 
     private List<News> getNewsList(){
         //TODO: for backend: an interface providing all the news presented in the news list
+        ////////////////currentNewsList = API_RETURN;
         return currentNewsList;
     }
 
@@ -234,7 +216,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         // currentNewsList.get(position).setRead();
         Intent intent;
         intent = new Intent(this.getActivity(), DetailNewsActivity.class);
-        intent.putExtra("news",currentNewsList.get(position));
+        intent.putExtra("NewsId",currentNewsList.get(position)._id);
         startActivity(intent);
     }
 
@@ -248,16 +230,9 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
                 //TODO::backend::An API for updating news
-                /*
-                manager.getNewestBefore(currentNewsList.get(0)._id,selectedChannel, (newsList) -> {
-                    currentNewsList.addAll(0, newsList);
-                    //Log.d("getNews", "setTopView: " + newsList.size());
-                    adapter.updateNews(currentNewsList);
-                    adapter.notifyDataSetChanged();
-                    //Log.d("notify", "setTopView: " + adapter.getItemCount());
-                    recyclerView.setAdapter(adapter);
-                    viewPager.setCurrentItem(0);
-                });*/
+                /*currentNewsList.add(0,new News("update"));
+                adapter.updateNews(currentNewsList);
+                adapter.notifyDataSetChanged();*/
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -265,16 +240,9 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             public void onLoadMore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
                 //TODO::backend::An API for loading more news
-                /*
-                manager.updateNews(selectedChannel, 20, null, (newsList) -> {
-                    currentNewsList.addAll(newsList);
-                    //Log.d("getNews", "setTopView: " + newsList.size());
-                    adapter.updateNews(currentNewsList);
-                    adapter.notifyDataSetChanged();
-                    //Log.d("notify", "setTopView: " + adapter.getItemCount());
-                    recyclerView.setAdapter(adapter);
-                    viewPager.setCurrentItem(0);
-                });*/
+                /*currentNewsList.add(new News("load more"));
+                adapter.refreshNews(currentNewsList);
+                adapter.notifyDataSetChanged();*/
             }
         });
     }
@@ -292,18 +260,20 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         hsv.smoothScrollTo(len, 0);
 
         currentNewsList.clear();
-        /*
-        manager.selectNews();
-        manager.getNews(selectedChannel, 20, null, (newsList) -> {
-            currentNewsList.addAll(newsList);
-            //Log.d("getNews", "setTopView: " + newsList.size());
-            adapter.updateNews(currentNewsList);
-            adapter.notifyDataSetChanged();
-            //Log.d("notify", "setTopView: " + adapter.getItemCount());
-            recyclerView.setAdapter(adapter);
-            viewPager.setCurrentItem(0);
-        });*/
-        //TODO::backend::front::how to call
+        for(int i = 0; i < choices.size(); i++) {
+            if(choices.get(i).equals(selectedChannel))
+                for(int j = 0; j < 2; j++){
+                    String temp = choices.get(i)+" "+j;
+                    // News fg = new News(temp);
+                    //TODO::backend get news from the backend data base(need to search)
+                    /*
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", choices.get(i));
+                    fg.setArguments(bundle);
+                    */
+                    //currentNewsList.add(fg);
+                }
+        }
         adapter.updateNews(currentNewsList);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
@@ -335,6 +305,17 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         int len = left + width / 2 - screenWidth / 2;
         hsv.smoothScrollTo(len, 0);
         selectedChannel = choices.get(0);
+        //adapter.notifyDataSetChanged();
+
+        manager.getNews("news", 20, null, (newsList) -> {
+            currentNewsList = newsList;
+            //Log.d("getNews", "setTopView: " + newsList.size());
+            adapter.updateNews(currentNewsList);
+            adapter.notifyDataSetChanged();
+            //Log.d("notify", "setTopView: " + adapter.getItemCount());
+            recyclerView.setAdapter(adapter);
+            viewPager.setCurrentItem(0);
+        });
     }
 
 
