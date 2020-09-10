@@ -24,7 +24,7 @@ public interface NewsDao {
     @Query("SELECT * FROM news ORDER BY _id DESC LIMIT 1")
     News selectLatest();
 
-    @Query("SELECT * FROM news WHERE _id < :id  AND title = :key AND type IN (:types) ORDER BY _id DESC LIMIT :limit")
+    @Query("SELECT * FROM news WHERE _id < :id  AND title LIKE :key AND type IN (:types) ORDER BY _id DESC LIMIT :limit")
     List<News> searchNews(String key, int limit, String id, String[] types);
 
     @Insert

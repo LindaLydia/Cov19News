@@ -17,6 +17,7 @@ import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         this.initTabLine();
         //initialize the view for this activity
         this.initView();
-
     }
 
     private void initTabLine() {
