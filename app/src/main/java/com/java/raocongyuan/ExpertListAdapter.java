@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.java.raocongyuan.backend.data.Expert;
 
+
 import java.util.List;
 
 public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.ExpertListViewHolder> {
@@ -89,9 +90,6 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
     public void onBindViewHolder(@NonNull ExpertListViewHolder holder, final int position){
         final Expert expert = expertList.get(position);
 
-        if(expert.name_zh.equals("钟南山")) {
-            Log.d("ExpertListAdapter", "onBindViewHolder: " + expert.is_passedaway);
-        }
 
         //Log.d("check onBindViewHolder in ExpertListAdapter: ", "here "+position);
         if(!expert.avatar.equals("")){
@@ -123,6 +121,28 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
         holder.s_value.setText(String.valueOf(expert.indices.sociability));
         holder.c_value.setText(String.valueOf(expert.indices.citations));
         holder.p_value.setText(String.valueOf(expert.indices.pubs));
+
+        if(!expert.avatar.equals(""))
+            Glide.with(activity).load(expert.avatar).into(holder.imageView);
+        else{
+            //TODO::front::add a null picture
+        }
+
+        if(expert.expert_name_zh.equals(""))
+            holder.name_text.setText(expert.expert_name);
+        else
+            holder.name_text.setText(expert.expert_name_zh);
+        if(expert.isPassedAway)
+            holder.name_text.setBackground(activity.getDrawable(R.drawable.textview_white_background_border));
+
+        holder.position_text.setText(expert.position);
+        holder.affiliation_text.setText(expert.affiliation);
+        holder.h_value.setText(String.valueOf(expert.h_value));
+        holder.g_value.setText(String.valueOf(expert.g_value));
+        holder.a_value.setText(String.valueOf(expert.a_value));
+        holder.s_value.setText(String.valueOf(expert.s_value));
+        holder.c_value.setText(String.valueOf(expert.c_value));
+        holder.p_value.setText(String.valueOf(expert.p_value));
     }
 
     @Override

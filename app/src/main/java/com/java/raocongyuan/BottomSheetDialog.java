@@ -34,6 +34,14 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 //dismiss();
+                /*Share2.Builder builder = new Share2.Builder(this)
+                        .setContentType(ShareContentType.TEXT)
+                        .setTextContent(news.title)
+                        .setShareToComponent("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI")
+                        .setTitle("Share Text to Moment")
+                        .build()
+                        .shareBySystem();
+                 */
                 //TODO::backend or front??::prepare the things and invoke WeChat Moment
             }
         });

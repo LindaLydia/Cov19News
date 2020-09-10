@@ -25,11 +25,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListViewHolder> {
-    //private ArrayList<News> news;
-    //private Pattern pat;
-    //private OnItemClickListener listener;
-    //private NewsListManager newsListManager;
-    //private OfflineNewsManager offlineNewsManager;
+
     private Activity activity;
     private BottomSheetDialog bottomSheetDialog;
     private FragmentManager fragmentManager;
