@@ -65,14 +65,17 @@ public class Expert implements Serializable {
     public Profile profile;
     public boolean is_passedaway;
 
+    @NotNull
     @Override
     public String toString() {
         return "Expert{" +
-                "id='" + id + '\'' +
+                "avatar='" + avatar + '\'' +
+                ", id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", name_zh='" + name_zh + '\'' +
                 ", indices=" + indices +
                 ", profile=" + profile +
+                ", is_passedaway=" + is_passedaway +
                 '}';
     }
 }
