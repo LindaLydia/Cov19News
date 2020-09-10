@@ -72,9 +72,10 @@ public class EpidemicWorker extends Worker {
             epidemic.province = provinceNameMap.get(e.getKey().substring(6));
             return epidemic;
         }).sorted((a, b) -> b.confirmed.get(b.days - 1) - a.confirmed.get(a.days - 1)).collect(Collectors.toList());
-        international = result.entrySet().stream().filter(e -> e.getKey().split("\\|").length == 1).map(e -> {
+        international = result.entrySet().stream().filter(e -> e.getKey().split("\\|").length == 1 && !e.getKey().equals("World")).map(e -> {
             Epidemic epidemic = DataToEpidemic(e.getValue());
             epidemic.country = e.getKey();
+
             return epidemic;
         }).sorted((a, b) -> b.confirmed.get(b.days - 1) - a.confirmed.get(a.days - 1)).collect(Collectors.toList());
     }
@@ -148,5 +149,10 @@ public class EpidemicWorker extends Worker {
             {"Ningxia", "宁夏"},
             {"Qinghai", "青海"},
             {"Xizang", "西藏"},
+    }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+
+    private final Map<String, String> simpleNameMap = Stream.of(new String[][]{
+            {"United States of America", "USA"},
+            {"United Kingdom", "UK"},
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 }

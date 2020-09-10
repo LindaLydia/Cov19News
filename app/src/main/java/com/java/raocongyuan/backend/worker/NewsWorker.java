@@ -36,6 +36,11 @@ public class NewsWorker extends Worker {
         this.init = init;
     }
 
+    static public class UpdateLock {
+        // Lock to indicate new data
+        static public boolean updated = false;
+    }
+
     static private class NewsDeserializer implements JsonDeserializer<News> {
         @Override
         public News deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -87,7 +92,7 @@ public class NewsWorker extends Worker {
             int lastTotal = 0;
             int page = 1;
             int total = 1;
-            String oldestId = "ffffffffffffffffffffffff";
+            String oldestId = DataManager.maxId;
             synchronized (this) {
                 try {
                     long start = System.currentTimeMillis();
@@ -127,6 +132,12 @@ public class NewsWorker extends Worker {
                                 count += result.data.size();
                                 lastTotal = total;
                                 page += 1;
+                                if(!init) {
+                                    synchronized (UpdateLock.class) {
+                                        UpdateLock.updated = true;
+                                        UpdateLock.class.notifyAll();
+                                    }
+                                }
                             }
                         } catch (IOException e) {
                             Log.d(TAG, "run: Network Error, just waiting for 3 second");
@@ -141,11 +152,12 @@ public class NewsWorker extends Worker {
                 }
             }
             Log.d(TAG, "Done: Worker for " + type + " terminated.");
-            if(init)
+            if (init)
                 break;
             synchronized (this) {
                 try {
-                    this.wait(5 * 60 * 1000);
+                    page = 1;
+                    this.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

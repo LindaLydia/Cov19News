@@ -6,6 +6,7 @@ import com.java.raocongyuan.backend.data.Epidemic;
 import com.java.raocongyuan.backend.data.News;
 import com.java.raocongyuan.backend.worker.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -24,6 +25,7 @@ public class DataManager {
     // Epidemic data just in memory
 
     static private DataManager instance = null;
+    static public final String maxId = "ffffffffffffffffffffffff";
 
     final String[] types = new String[]{"news", "paper", "points", "event"};
     // final String[] types = new String[]{"news"}; // test
@@ -75,15 +77,6 @@ public class DataManager {
         getEpidemic(number, callback, epidemicWorker::getInternational);
     }
 
-    public void selectNews(final int limit, final int offset, Consumer<List<News>> callback) {
-        CompletableFuture<List<News>> cf = CompletableFuture.supplyAsync(() -> db.newsDao().selectByNumber(limit, offset));
-        cf.thenAccept(callback);
-        cf.exceptionally(e -> {
-            e.printStackTrace();
-            return null;
-        });
-    }
-
     public synchronized String getNewestBefore(String _id, String type) {
         // Warning: sync method
         String result = db.newsDao().selectBeforeId(_id, type);
@@ -98,22 +91,34 @@ public class DataManager {
         });
     }
 
-    public void updateNews(String type, Consumer<Boolean> callback) {
+    private String[] makeTypes(String type) {
+        return type.equals("all")? this.types: new String[] {type};
+    }
 
+    public void updateNews(String type, Consumer<Boolean> callback) {
         CompletableFuture<Boolean> cf = CompletableFuture.supplyAsync(() -> {
-            News news = type.equals("all")? db.newsDao().selectLatest(): db.newsDao().selectLatestByType(type);
-            NewsWorker worker = newsWorkers.getOrDefault(type, null);
-            if (worker == null) {
-                worker = new NewsWorker(this, type, false);
-                newsWorkers.put(type, worker);
-                worker.start();
+            String[] types = makeTypes(type);
+            News news = db.newsDao().selectLatestByTypes(types);
+            synchronized (NewsWorker.UpdateLock.class) {
+                NewsWorker.UpdateLock.updated = false;
+                Arrays.stream(types).forEach((_type) -> {
+                    NewsWorker worker = newsWorkers.getOrDefault(_type, null);
+                    if (worker == null) {
+                        worker = new NewsWorker(this, _type, false);
+                        newsWorkers.put(_type, worker);
+                        worker.start();
+                    }
+                    else {
+                        worker.notify();
+                    }
+                });
+                try {
+                    NewsWorker.UpdateLock.class.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            newsWorkers.values().forEach(Object::notify);
-            News newNews;
-            synchronized (worker) {
-                // Wait for worker to finish first page
-                newNews = type.equals("all")? db.newsDao().selectLatest(): db.newsDao().selectLatestByType(type);
-            }
+            News newNews = db.newsDao().selectLatestByTypes(types);
             return news.rowid == newNews.rowid;
         });
         cf.thenAccept(callback);
@@ -124,13 +129,18 @@ public class DataManager {
     }
 
     public void getNews(String type, int limit, String lastId, Consumer<List<News>> callback) {
-        CompletableFuture<List<News>> cf = CompletableFuture.supplyAsync(() ->
-                type.equals("all")?
-                        (lastId == null ?
-                                db.newsDao().selectByNumber(limit, 0) : db.newsDao().selectEarlier(limit, lastId) ):
-                        (lastId == null ?
-                                db.newsDao().selectByNumberType(limit, 0, type) : db.newsDao().selectEarlierByType(limit, lastId, type))
-        );
+        CompletableFuture<List<News>> cf = CompletableFuture.supplyAsync(() -> db.newsDao().selectNews(
+                limit, lastId == null? maxId: lastId, makeTypes(type)));
+        cf.thenAccept(callback);
+        cf.exceptionally(e -> {
+            e.printStackTrace();
+            return null;
+        });
+    }
+
+    public void searchNews(String key, String type, int limit, String lastId, Consumer<List<News>> callback) {
+        CompletableFuture<List<News>> cf = CompletableFuture.supplyAsync(() -> db.newsDao().searchNews(
+                "%" + key + "%", limit, lastId == null? maxId: lastId, makeTypes(type)));
         cf.thenAccept(callback);
         cf.exceptionally(e -> {
             e.printStackTrace();
