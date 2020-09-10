@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        Cov19NewsKey {
-            storeFile file('C:\\Users\\LYDIA\\.android\\Cov19News.jks')
-            storePassword 'Lydia6125z'
-            keyAlias = 'Cov19NewsKey'
-            keyPassword 'Lydia6125z'
-        }
-    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
