@@ -24,6 +24,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -151,10 +152,7 @@ public class StatisticsFragment extends Fragment {
             public void handleMessage(Message msg){
                 if(msg.obj instanceof String){
                     if(msg.obj.equals("Done")){
-                        //Log.d("in handler", "handleMessage: gotton data");
-                        //Log.d("in get_message", domestic_epidemic.toString()+"---"+international_epidemic.toString());
                         init();
-                        //Log.d("statistics init", "init: domestic");
                     }
                 }
             }
@@ -168,7 +166,7 @@ public class StatisticsFragment extends Fragment {
                 Message msg = new Message();
                 msg.obj = "Done";
                 handler.sendMessage(msg);
-                Log.d("in call back", domestic_epidemic.toString()+"---"+international_epidemic.toString());
+                //Log.d("in call back", domestic_epidemic.toString()+"---"+international_epidemic.toString());
             });
         });
 
@@ -335,6 +333,9 @@ public class StatisticsFragment extends Fragment {
         Matrix m = new Matrix();
         m.postScale(0.9f, 1f);//两个参数分别是x,y轴的缩放比例。例如：将x轴的数据放大为之前的1.5倍
         bar_chart.getViewPortHandler().refresh(m, bar_chart, false);//将图表动画显示之前进行缩放
+        Description description = new Description();
+        description.setText("");
+        bar_chart.setDescription(description);
 
         //x-axis
         XAxis bar_xAxis = bar_chart.getXAxis();
@@ -403,6 +404,11 @@ public class StatisticsFragment extends Fragment {
     private void SetBarChart(List<Epidemic> raw_data, boolean isInternational) {
         //Map<Country||Province,AccumulativeStatistics(3 Integer)>
         bar_data.clear();
+        if(raw_data==null){
+            Toast toast = Toast.makeText(getContext(),"当前网络不畅，(⊙x⊙;)您真的联网了吗 orz",Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
         for(Epidemic e : raw_data){
             String key;
             if(isInternational)
@@ -473,10 +479,22 @@ public class StatisticsFragment extends Fragment {
 
     private void SetLineChart(boolean isInternational, int position) {
         Epidemic e;
-        if(isInternational)
+        if(isInternational){
+            if(international_epidemic==null){
+                Toast toast = Toast.makeText(getContext(),"当前网络不畅，(⊙x⊙;)您真的联网了吗 orz",Toast.LENGTH_LONG);
+                toast.show();
+                return;
+            }
             e = international_epidemic.get(position);
-        else
+        }
+        else{
+            if(domestic_epidemic==null){
+                Toast toast = Toast.makeText(getContext(),"当前网络不畅，(⊙x⊙;)您真的联网了吗 orz",Toast.LENGTH_LONG);
+                toast.show();
+                return;
+            }
             e = domestic_epidemic.get(position);
+        }
 
         List<Integer> confirmed_trend = e.confirmed;
         List<Integer> cured_trend = e.cured;

@@ -88,6 +88,8 @@ public class ClassificationFragment extends Fragment implements ClassificationAd
         this.inflater = inflater;
         view = inflater.inflate(R.layout.fragment_classification, container, false);
 
+        init();
+
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg){
@@ -116,6 +118,12 @@ public class ClassificationFragment extends Fragment implements ClassificationAd
 
     private List<News> getEventList(){
         return currentEventList;
+    }
+
+    private void init(){
+        manager.getNews("event",100,null,(event_list)->{
+            currentEventList = event_list;
+        });
     }
 
     @Override

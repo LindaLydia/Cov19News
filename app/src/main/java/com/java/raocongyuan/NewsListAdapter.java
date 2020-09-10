@@ -2,6 +2,7 @@ package com.java.raocongyuan;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.java.raocongyuan.backend.DataManager;
 import com.java.raocongyuan.backend.data.News;
 import com.sackcentury.shinebuttonlib.ShineButton;
 import com.bumptech.glide.Glide;
@@ -31,6 +33,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
     private FragmentManager fragmentManager;
     private List<News> newsItems;
     private OnMenuItemListener onMenuItemListener;
+
+    private DataManager manager;
 
     public void updateNews(List<News> updated){
         newsItems = updated;
@@ -78,6 +82,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
     }
 
     public NewsListAdapter(List<News> data, Activity activity, FragmentManager fragmentManager, OnMenuItemListener onMenuItemListener) {
+        this.manager = DataManager.getInstance(null);
         this.newsItems = data;
         this.activity = activity;
         this.fragmentManager = fragmentManager;
@@ -128,7 +133,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         holder.starButton.setOnCheckStateChangeListener(new ShineButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(View view, boolean checked) {
-                newsItem.liked = !newsItem.liked;
+                manager.likeNews(newsItem,!newsItem.liked);
             }
         });
         holder.starButton.setChecked(newsItem.liked);
@@ -137,9 +142,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         holder.shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                /*
                 bottomSheetDialog = new BottomSheetDialog(newsItem);
-                //bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_share);
                 bottomSheetDialog.show(fragmentManager, "bottomSheet");
+                */
+                Intent share_intent = new Intent();
+                share_intent.setAction(Intent.ACTION_SEND);
+                share_intent.setType("text/plain");
+                share_intent.putExtra(Intent.EXTRA_SUBJECT,"Share");
+                share_intent.putExtra(Intent.EXTRA_TEXT,"Shared from Covid19News : "+newsItem.title);
+                share_intent = Intent.createChooser(share_intent,"SHARE");
+                activity.startActivity(share_intent);
             }
         });
     }

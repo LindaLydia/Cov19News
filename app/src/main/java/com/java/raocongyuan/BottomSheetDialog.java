@@ -1,5 +1,6 @@
 package com.java.raocongyuan;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.java.raocongyuan.backend.data.News;
+
+import gdut.bsx.share2.Share2;
+import gdut.bsx.share2.ShareContentType;
 
 public class BottomSheetDialog extends BottomSheetDialogFragment {
     private News news;
@@ -30,18 +34,18 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         ImageButton button1 = v.findViewById(R.id.share_to_moment);
         ImageButton button2 = v.findViewById(R.id.share_to_weibo);
         ImageButton button3 = v.findViewById(R.id.share_to_WeChat_friends);
+        final Activity activity = this.getActivity();
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //dismiss();
-                /*Share2.Builder builder = new Share2.Builder(this)
+                new Share2.Builder(activity)
                         .setContentType(ShareContentType.TEXT)
-                        .setTextContent(news.title)
+                        .setTextContent(news.title.toString())
                         .setShareToComponent("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI")
                         .setTitle("Share Text to Moment")
                         .build()
                         .shareBySystem();
-                 */
                 //TODO::backend or front??::prepare the things and invoke WeChat Moment
             }
         });

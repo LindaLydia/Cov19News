@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 /**
@@ -59,6 +60,8 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
 
     public final static int NEWSPAESEARCHREQUEST = 2; // channel-request
     public final static int NEWSPAESEARCHRESULT = 11; // channel-change-result
+
+    public static String search_key;
 
 
     private LayoutInflater inflater;
@@ -135,7 +138,10 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                 if(msg.obj instanceof String){
                     if(msg.obj.equals("Done")){
                         adapter.updateNews(currentNewsList);
-                        adapter.notifyDataSetChanged();
+                        if(msg.arg1!=-1)
+                            adapter.notifyDataSetChanged();
+                        else
+                            adapter.notifyItemRangeChanged(msg.arg2,20);
                         //Log.d("notify", "setTopView: " + adapter.getItemCount());
                         recyclerView.setAdapter(adapter);
                         if(msg.arg1!=-1)
@@ -219,7 +225,8 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
     @Override
     public void onMenuItemClick(int position) {
 //        Log.d("position", letterList[position]);
-        // currentNewsList.get(position).setRead();
+        manager.readNews(currentNewsList.get(position));
+        adapter.notifyItemChanged(position);
         Intent intent;
         intent = new Intent(this.getActivity(), DetailNewsActivity.class);
         intent.putExtra("news",currentNewsList.get(position));
@@ -242,6 +249,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                             Message msg = new Message();
                             msg.obj = "Done";
                             msg.arg1 = -1;
+                            msg.arg2 = 0;
                             handler.sendMessage(msg);
                         });
                     }
@@ -257,10 +265,11 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             public void onLoadMore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
                 manager.getNews(selectedChannel, 20, null, (newsList) -> {
-                    currentNewsList.addAll(newsList);
                     Message msg = new Message();
                     msg.obj = "Done";
                     msg.arg1 = -1;
+                    msg.arg2 = currentNewsList.size();
+                    currentNewsList.addAll(newsList);
                     handler.sendMessage(msg);
                 });
             }
@@ -298,6 +307,22 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         radioGroup.check(0);
         setHSV(0);
 
+        CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> {
+            while(true) {
+                if(currentNewsList!=null)
+                    break;
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        cf.exceptionally((e) -> {
+            e.printStackTrace();
+            return null;
+        });
+
         manager.getNews(selectedChannel, 20, null, (newsList) -> {
             currentNewsList = newsList;
             Message msg = new Message();
@@ -323,13 +348,13 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             case NEWSPAESEARCHREQUEST:
                 if(resultCode == NEWSPAESEARCHRESULT) {
                     //setTopView();
-                    //TODO::back and front::update the news
-                    //TODO::search with multiple key-words adding the channel type
-                    //TODO::front::load the data
-                    //currentNewsList = currentNewsList;
-                    /*currentNewsList.add(0,new News("search"));
-                    adapter.updateNews(currentNewsList);
-                    adapter.notifyDataSetChanged();*/
+                    //Log.d("search_key", "onActivityResult: "+search_key);
+                    manager.searchNews(search_key,selectedChannel,20,null,(newsList)->{
+                        currentNewsList = newsList;
+                        Message msg = new Message();
+                        msg.obj = "Done";
+                        handler.sendMessage(msg);
+                    });
                 }
                 break;
         }

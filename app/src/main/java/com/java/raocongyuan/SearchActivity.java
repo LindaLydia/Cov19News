@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
+import com.java.raocongyuan.backend.DataManager;
 
 import scut.carson_ho.searchview.ICallBack;
 import scut.carson_ho.searchview.SearchView;
@@ -23,16 +26,13 @@ public class SearchActivity extends AppCompatActivity {
         search_request_mode = intent.getStringExtra("Caller");
         searchView = (SearchView) findViewById(R.id.search_view);
 
-
         searchView.setOnClickSearch(new ICallBack() {
             @Override
             public void SearchAciton(String string) {
-                //TODO::front::send the string to the backend and set the news gotten
-                //TODO::A new class for getting and storing the searched info
-                //我拒绝回调回调回调
+                NewsListFragment.search_key = string;
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 setResult(NewsListFragment.NEWSPAESEARCHRESULT, intent);
-                System.out.println("我收到了" + string);
+                //Log.d("search text", string);
                 finish();
             }
         });

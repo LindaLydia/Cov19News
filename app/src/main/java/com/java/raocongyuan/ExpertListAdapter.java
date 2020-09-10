@@ -1,6 +1,7 @@
 package com.java.raocongyuan;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.util.Log;
@@ -99,6 +100,9 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
                 ColorMatrixColorFilter grayColorFilter = new ColorMatrixColorFilter(cm);
                 holder.imageView.setColorFilter(grayColorFilter);
             }
+            else{
+                holder.imageView.setColorFilter(null);
+            }
             Glide.with(activity).load(expert.avatar).into(holder.imageView);
         }
         else{
@@ -111,6 +115,8 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
 
         if(expert.is_passedaway)
             holder.name_text.setBackground(activity.getDrawable(R.drawable.textview_white_background_border));
+        else
+            holder.name_text.setBackground(activity.getDrawable(R.drawable.textview_white_background));
         //TODO::front::the above works???
 
         holder.position_text.setText(expert.profile.position);
