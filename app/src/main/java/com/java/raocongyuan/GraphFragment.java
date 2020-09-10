@@ -118,7 +118,7 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
                 currentEntityList.clear();
                 //Log.d("after search1, ",currentEntityList.size()+" "+adapter.getItemCount());
                 manager.searchEntities(search_key,(enetiy_list)->{
-                    if(enetiy_list.size() > 0){
+                    if(enetiy_list!=null && enetiy_list.size() > 0){
                         for(com.java.raocongyuan.backend.data.Entity origin_e :enetiy_list){
                             Entity new_entiy = new Entity(origin_e.name,origin_e.image,origin_e.definition,origin_e.relations,origin_e.properties);
                             currentEntityList.add(new_entiy);

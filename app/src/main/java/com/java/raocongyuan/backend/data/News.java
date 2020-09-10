@@ -35,6 +35,7 @@ public class News implements Serializable {
 
     // Fields below for event
     public double influence;
+    public String label;
 
     // Fields below for paper
     public String doi;

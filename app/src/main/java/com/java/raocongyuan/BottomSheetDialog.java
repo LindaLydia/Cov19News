@@ -44,7 +44,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
                 //TODO::backend or front??::prepare the things and invoke WeiBo
             }
         });
-        button2.setOnClickListener(new View.OnClickListener() {
+        button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //dismiss();

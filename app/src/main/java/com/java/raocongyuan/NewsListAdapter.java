@@ -100,7 +100,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         //CardView v = (CardView) holder.linearLayout.getChildAt(0);
         //v.setText(newsItems[position]);
         final News newsItem = newsItems.get(position);
-        System.out.println(newsItem+"\n\n");
+        //System.out.println(newsItem+"\n\n");
 
         holder.txtTitle.setText(newsItem.title.replace((char)12288+"",""));
         holder.txtAbstract.setText(newsItem.preview.replace((char)12288+"",""));

@@ -151,10 +151,10 @@ public class StatisticsFragment extends Fragment {
             public void handleMessage(Message msg){
                 if(msg.obj instanceof String){
                     if(msg.obj.equals("Done")){
-                        Log.d("in handler", "handleMessage: gotton data");
-                        Log.d("in get_message", domestic_epidemic.toString()+"---"+international_epidemic.toString());
+                        //Log.d("in handler", "handleMessage: gotton data");
+                        //Log.d("in get_message", domestic_epidemic.toString()+"---"+international_epidemic.toString());
                         init();
-                        Log.d("statistics init", "init: domestic");
+                        //Log.d("statistics init", "init: domestic");
                     }
                 }
             }
@@ -197,7 +197,7 @@ public class StatisticsFragment extends Fragment {
         //TODO::backend and front::get data with parameter isInternational
         //TODO::line_data, start_date, bar_data
 
-        Log.d("in call back", domestic_epidemic.toString()+"---"+international_epidemic.toString());
+        //Log.d("in call back", domestic_epidemic.toString()+"---"+international_epidemic.toString());
         //initialize the properties for bar-chart
         initChart();
 
