@@ -127,8 +127,8 @@ public class NewsWorker extends Worker {
                                     Log.d(TAG, "run: Meet existing fragment");
                                     break;
                                 }
-                                manager.addNews(result.data.subList(total - lastTotal, result.data.size()).stream().filter((news) ->
-                                        existId.compareTo(news._id) < 0 && news._id.compareTo(oldestId) < 0).toArray(News[]::new));
+                                //manager.addNews(result.data.subList(total - lastTotal, result.data.size()).stream().filter((news) ->
+                                //        existId.compareTo(news._id) < 0 && news._id.compareTo(oldestId) < 0).toArray(News[]::new));
                                 count += result.data.size();
                                 lastTotal = total;
                                 page += 1;

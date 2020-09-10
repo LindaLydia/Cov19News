@@ -46,10 +46,6 @@ public class News implements Serializable {
     public Boolean read;
     @ColumnInfo(defaultValue = "false")
     public Boolean liked;
-
-    public News() {
-
-    }
 }
 
 

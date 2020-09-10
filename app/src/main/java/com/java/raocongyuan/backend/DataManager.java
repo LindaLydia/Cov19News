@@ -28,7 +28,7 @@ public class DataManager {
     static private DataManager instance = null;
     static public final String maxId = "ffffffffffffffffffffffff";
 
-    final String[] types = new String[]{"news", "paper", "points", "event"};
+    final String[] types = new String[]{"news", "paper"};
     // final String[] types = new String[]{"news"}; // test
 
     private DataManager(Context context) {
@@ -43,6 +43,7 @@ public class DataManager {
         entityWorker.start();
         expertWorker = new ExpertWorker(this);
         expertWorker.start();
+        // (new EventWorker(this)).start();
     }
 
     static public synchronized DataManager getInstance(Context context) {

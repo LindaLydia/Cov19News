@@ -402,6 +402,8 @@ public class StatisticsFragment extends Fragment {
 
     private void SetBarChart(List<Epidemic> raw_data, boolean isInternational) {
         //Map<Country||Province,AccumulativeStatistics(3 Integer)>
+        if(raw_data == null)
+            return;
         bar_data.clear();
         for(Epidemic e : raw_data){
             String key;
@@ -473,6 +475,8 @@ public class StatisticsFragment extends Fragment {
 
     private void SetLineChart(boolean isInternational, int position) {
         Epidemic e;
+        if(international_epidemic == null || domestic_epidemic == null)
+            return;
         if(isInternational)
             e = international_epidemic.get(position);
         else
@@ -498,7 +502,7 @@ public class StatisticsFragment extends Fragment {
 
         int count = confirmed_trend.size();
         for (int ic = 0; ic < count; ic++) {
-            System.out.println(ic + " " + confirmed_trend.get(ic) + " " + cured_trend.get(ic) + " " + dead_trend.get(ic));
+            // System.out.println(ic + " " + confirmed_trend.get(ic) + " " + cured_trend.get(ic) + " " + dead_trend.get(ic));
             confirmed_data.add(new Entry(ic, confirmed_trend.get(ic)));
             cured_data.add(new Entry(ic, cured_trend.get(ic)));
             dead_data.add(new Entry(ic, dead_trend.get(ic)));//val,xIndex
