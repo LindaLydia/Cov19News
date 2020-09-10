@@ -92,13 +92,13 @@ public class DataManager {
     }
 
     private String[] makeTypes(String type) {
-        return type.equals("all")? this.types: new String[] {type};
+        return type.equals("all") ? this.types : new String[]{type};
     }
 
     public void updateNews(String type, Consumer<Boolean> callback) {
         CompletableFuture<Boolean> cf = CompletableFuture.supplyAsync(() -> {
             String[] types = makeTypes(type);
-            News news = db.newsDao().selectLatestByTypes(types);
+            News news = db.newsDao().selectLatest(types);
             synchronized (NewsWorker.UpdateLock.class) {
                 NewsWorker.UpdateLock.updated = false;
                 Arrays.stream(types).forEach((_type) -> {
@@ -107,8 +107,7 @@ public class DataManager {
                         worker = new NewsWorker(this, _type, false);
                         newsWorkers.put(_type, worker);
                         worker.start();
-                    }
-                    else {
+                    } else {
                         worker.notify();
                     }
                 });
@@ -118,7 +117,7 @@ public class DataManager {
                     e.printStackTrace();
                 }
             }
-            News newNews = db.newsDao().selectLatestByTypes(types);
+            News newNews = db.newsDao().selectLatest(types);
             return news.rowid == newNews.rowid;
         });
         cf.thenAccept(callback);
@@ -130,7 +129,7 @@ public class DataManager {
 
     public void getNews(String type, int limit, String lastId, Consumer<List<News>> callback) {
         CompletableFuture<List<News>> cf = CompletableFuture.supplyAsync(() -> db.newsDao().selectNews(
-                limit, lastId == null? maxId: lastId, makeTypes(type)));
+                limit, lastId == null ? maxId : lastId, makeTypes(type)));
         cf.thenAccept(callback);
         cf.exceptionally(e -> {
             e.printStackTrace();
@@ -140,12 +139,32 @@ public class DataManager {
 
     public void searchNews(String key, String type, int limit, String lastId, Consumer<List<News>> callback) {
         CompletableFuture<List<News>> cf = CompletableFuture.supplyAsync(() -> db.newsDao().searchNews(
-                "%" + key + "%", limit, lastId == null? maxId: lastId, makeTypes(type)));
+                "%" + key + "%", limit, lastId == null ? maxId : lastId, makeTypes(type)));
         cf.thenAccept(callback);
         cf.exceptionally(e -> {
             e.printStackTrace();
             return null;
         });
+    }
+
+    public void likeNews(News news, boolean like) {
+        news.liked = like;
+        CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> db.newsDao().updateNews(news));
+        cf.exceptionally(e -> {
+            e.printStackTrace();
+            return null;
+        });
+    }
+
+    public void readNews(News news) {
+        if (!news.read) {
+            news.read = true;
+            CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> db.newsDao().updateNews(news));
+            cf.exceptionally(e -> {
+                e.printStackTrace();
+                return null;
+            });
+        }
     }
 
     public void searchEntities(String keyword, EntityWorker.Callback callback) {
