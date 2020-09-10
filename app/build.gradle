@@ -97,9 +97,6 @@ dependencies {
     //MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 
-    //share2
-    implementation 'gdut.bsx:share2:0.9.3'
-
 
     // Room
     def room_version = "2.2.5"

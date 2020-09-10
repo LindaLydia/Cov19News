@@ -66,8 +66,17 @@ public class DetailNewsActivity extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                /*
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(newsItem);
                 bottomSheetDialog.show(getSupportFragmentManager(), "bottomSheet");
+                */
+                Intent share_intent = new Intent();
+                share_intent.setAction(Intent.ACTION_SEND);
+                share_intent.setType("text/plain");
+                share_intent.putExtra(Intent.EXTRA_SUBJECT,"Share");
+                share_intent.putExtra(Intent.EXTRA_TEXT,"Share from Covid19: "+newsItem.title);
+                share_intent = Intent.createChooser(share_intent,"SHARE");
+                startActivity(share_intent);
             }
         });
 
