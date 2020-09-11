@@ -3,6 +3,7 @@ package com.java.raocongyuan.backend.worker;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.java.raocongyuan.backend.data.Expert;
@@ -125,7 +126,7 @@ public class ExpertWorker extends Worker {
                             experts = result.data.stream().distinct().collect(Collectors.toList());
                             callback.execute(experts);
                         }
-                    } catch (IOException e) {
+                    } catch (IOException | JsonIOException e) {
                         e.printStackTrace();
                         Log.d(TAG, "run: Network Error, please retry!");
                         callback.execute(null);

@@ -2,6 +2,7 @@ package com.java.raocongyuan.backend.worker;
 
 import android.util.Log;
 
+import com.google.gson.JsonIOException;
 import com.java.raocongyuan.backend.DataManager;
 import com.java.raocongyuan.backend.data.Epidemic;
 import com.google.gson.Gson;
@@ -102,7 +103,7 @@ public class EpidemicWorker extends Worker {
                     }
                     long stop = System.currentTimeMillis();
                     Log.d(TAG, "run: Cost " + (stop - start) + " ms");
-                } catch (IOException e) {
+                } catch (IOException | JsonIOException e) {
                     e.printStackTrace();
                 }
                 try {

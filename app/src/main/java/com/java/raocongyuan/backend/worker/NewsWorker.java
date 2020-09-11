@@ -3,6 +3,7 @@ package com.java.raocongyuan.backend.worker;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.google.gson.JsonIOException;
 import com.java.raocongyuan.backend.DataManager;
 import com.java.raocongyuan.backend.data.News;
 import com.google.gson.Gson;
@@ -139,7 +140,7 @@ public class NewsWorker extends Worker {
                                     }
                                 }
                             }
-                        } catch (IOException e) {
+                        } catch (IOException | JsonIOException e) {
                             Log.d(TAG, "run: Network Error, just waiting for 3 second");
                             this.wait(3000);
                         }

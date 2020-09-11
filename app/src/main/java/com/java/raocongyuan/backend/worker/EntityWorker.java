@@ -137,7 +137,7 @@ public class EntityWorker extends Worker {
                             Log.d(TAG, "run: " + result);
                             callback.execute(result.data);
                         }
-                    } catch (IOException e) {
+                    } catch (IOException | JsonIOException e) {
                         e.printStackTrace();
                         Log.d(TAG, "run: Network Error, please retry!");
                         callback.execute(null);
