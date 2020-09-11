@@ -14,6 +14,7 @@ import java.io.Serializable;
 //@Fts4
 @Entity(indices = {@Index(value = "_id", unique = true), @Index(value = "type")})
 public class News implements Serializable {
+
     @PrimaryKey(autoGenerate = true)
     public int rowid;
     public String id;
@@ -32,6 +33,7 @@ public class News implements Serializable {
 
     // Fields below for news
     public String preview;
+    public String title_preview;
 
     // Fields below for event
     public double influence;

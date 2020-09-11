@@ -43,7 +43,7 @@ public class DataManager {
         entityWorker.start();
         expertWorker = new ExpertWorker(this);
         expertWorker.start();
-        // (new EventWorker(this)).start();
+        //(new EventWorker(this)).start();
     }
 
     static public synchronized DataManager getInstance(Context context) {

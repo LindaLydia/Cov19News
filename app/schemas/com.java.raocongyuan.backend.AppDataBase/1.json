@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "36feefb415991aebeae17d5b81d568b0",
+    "identityHash": "8c94d85f1b9f0276c71176f276f0753c",
     "entities": [
       {
         "tableName": "News",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rowid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT, `_id` TEXT, `type` TEXT, `title` TEXT, `content` TEXT, `category` TEXT, `tflag` INTEGER NOT NULL, `date` TEXT, `time` TEXT, `lang` TEXT, `source` TEXT, `urls` TEXT, `preview` TEXT, `influence` REAL NOT NULL, `label` TEXT, `doi` TEXT, `pdf` TEXT, `read` INTEGER DEFAULT false, `liked` INTEGER DEFAULT false)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rowid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT, `_id` TEXT, `type` TEXT, `title` TEXT, `content` TEXT, `category` TEXT, `tflag` INTEGER NOT NULL, `date` TEXT, `time` TEXT, `lang` TEXT, `source` TEXT, `urls` TEXT, `preview` TEXT, `title_preview` TEXT, `influence` REAL NOT NULL, `label` TEXT, `doi` TEXT, `pdf` TEXT, `read` INTEGER DEFAULT false, `liked` INTEGER DEFAULT false)",
         "fields": [
           {
             "fieldPath": "rowid",
@@ -93,6 +93,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "title_preview",
+            "columnName": "title_preview",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "influence",
             "columnName": "influence",
             "affinity": "REAL",
@@ -161,7 +167,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '36feefb415991aebeae17d5b81d568b0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8c94d85f1b9f0276c71176f276f0753c')"
     ]
   }
 }
