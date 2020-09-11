@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.java.raocongyuan.backend.DataManager;
 
@@ -100,6 +101,15 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
             public void handleMessage(Message msg){
                 if(msg.obj instanceof String){
                     if(msg.obj.equals("Done")){
+                        if(currentEntityList==null){
+                            Toast toast = Toast.makeText(getContext(),"当前网络不畅，(⊙x⊙;)您真的联网了吗 orz",Toast.LENGTH_LONG);
+                            toast.show();
+                            currentEntityList = new ArrayList<Entity>();
+                        }
+                        else if(currentEntityList.size()==0){
+                            Toast toast = Toast.makeText(getContext(),"什么都没有搜到诶，这边建议您换个关键词试试看ᕙ(`▿´)ᕗ",Toast.LENGTH_LONG);
+                            toast.show();
+                        }
                         adapter.renewEntityList(currentEntityList);
                         adapter.notifyDataSetChanged();
                         recyclerView.setAdapter(adapter);
@@ -118,14 +128,18 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
                 currentEntityList.clear();
                 //Log.d("after search1, ",currentEntityList.size()+" "+adapter.getItemCount());
                 manager.searchEntities(search_key,(enetiy_list)->{
-                    if(enetiy_list!=null && enetiy_list.size() > 0){
+                    if(enetiy_list==null){
+                        currentEntityList = null;
+                    }
+                    else if(enetiy_list.size() > 0){
                         for(com.java.raocongyuan.backend.data.Entity origin_e :enetiy_list){
                             Entity new_entiy = new Entity(origin_e.name,origin_e.image,origin_e.definition,origin_e.relations,origin_e.properties);
                             currentEntityList.add(new_entiy);
                         }
                     }
-                    else
+                    else {
                         currentEntityList.clear();
+                    }
                     Message msg = new Message();
                     msg.obj = "Done";
                     msg.arg1 = 0;

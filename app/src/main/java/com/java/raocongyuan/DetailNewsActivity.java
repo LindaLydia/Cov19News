@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.java.raocongyuan.backend.DataManager;
@@ -21,15 +22,23 @@ public class DetailNewsActivity extends AppCompatActivity {
     private ImageButton shareButton;
     private ShineButton starButton;
 
+    private DataManager manager;
+    private News newsItem;
+    private int position;
+    private boolean inSearch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_news);
 
-        Intent intent = getIntent();
-        News newsItem = (News)intent.getSerializableExtra("news");
+        manager = DataManager.getInstance(null);
 
+        Intent intent = getIntent();
+        newsItem = (News)intent.getSerializableExtra("news");
+        position = intent.getIntExtra("news_position",-1);
+        inSearch = intent.getBooleanExtra("in_search", false);
         //TODO::backend::get news by ID
         //TODO::API
 
@@ -56,8 +65,7 @@ public class DetailNewsActivity extends AppCompatActivity {
         starButton.setOnCheckStateChangeListener(new ShineButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(View view, boolean checked) {
-                //TODO::front::is this the same object???
-                newsItem.liked = !newsItem.liked;
+                manager.likeNews(newsItem,!newsItem.liked);
             }
         });
         starButton.setChecked(newsItem.liked);
@@ -74,12 +82,23 @@ public class DetailNewsActivity extends AppCompatActivity {
                 share_intent.setAction(Intent.ACTION_SEND);
                 share_intent.setType("text/plain");
                 share_intent.putExtra(Intent.EXTRA_SUBJECT,"Share");
-                share_intent.putExtra(Intent.EXTRA_TEXT,"Share from Covid19: "+newsItem.title);
+                share_intent.putExtra(Intent.EXTRA_TEXT,"Share from Covid19:\nTitle: "+newsItem.title+ "\nAbstract: "+newsItem.preview);
                 share_intent = Intent.createChooser(share_intent,"SHARE");
                 startActivity(share_intent);
             }
         });
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        Intent intent;
+        if(inSearch)
+            intent = new Intent(getApplicationContext(), SearchView.class);
+        else
+            intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("position",position);
+        intent.putExtra("liked",newsItem.liked);
+        setResult(NewsListFragment.DETAILNEWSRESULT, intent);
+        finish();
     }
 }

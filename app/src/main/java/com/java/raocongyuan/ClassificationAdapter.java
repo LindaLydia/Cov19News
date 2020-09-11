@@ -71,6 +71,7 @@ public class ClassificationAdapter extends RecyclerView.Adapter<ClassificationAd
     public void onBindViewHolder(@NonNull ClassificationViewHolder holder, final int positon){
         final News event = eventItems.get(positon);
 
+        holder.txtTitle.setVisibility(View.GONE);
         holder.txtAbstract.setText(event.title.replace((char)12288+"",""));
 
         //Date and Time
@@ -79,7 +80,8 @@ public class ClassificationAdapter extends RecyclerView.Adapter<ClassificationAd
         else
             holder.item_date_time.setVisibility(View.GONE);
 
-        holder.classification_label.setText(event.label);
+        String temp_label = " "+event.label+" ";
+        holder.classification_label.setText(temp_label);
     }
 
     @Override

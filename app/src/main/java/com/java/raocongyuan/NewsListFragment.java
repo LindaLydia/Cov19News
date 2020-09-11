@@ -4,6 +4,7 @@ import com.java.raocongyuan.NewsListAdapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AppOpsManager;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -60,6 +61,9 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
 
     public final static int NEWSPAESEARCHREQUEST = 2; // channel-request
     public final static int NEWSPAESEARCHRESULT = 11; // channel-change-result
+
+    public final static int DETAILNEWSREQUEST = 3; // channel-request
+    public final static int DETAILNEWSRESULT = 12; // channel-change-result
 
     public static String search_key;
 
@@ -138,14 +142,20 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                 if(msg.obj instanceof String){
                     if(msg.obj.equals("Done")){
                         adapter.updateNews(currentNewsList);
-                        if(msg.arg1!=-1)
+                        if(msg.arg1>=0)
                             adapter.notifyDataSetChanged();
-                        else
+                        else if(msg.arg1==-1)
                             adapter.notifyItemRangeChanged(msg.arg2,20);
+                        else{
+                            Toast toast_isupdated = Toast.makeText(getActivity(), "已经是最新的啦~", Toast.LENGTH_SHORT);
+                            toast_isupdated.show();
+                        }
                         //Log.d("notify", "setTopView: " + adapter.getItemCount());
-                        recyclerView.setAdapter(adapter);
-                        if(msg.arg1!=-1)
+                        if(msg.arg1!=-1) {
                             viewPager.setCurrentItem(msg.arg1);
+                        }
+                        //else
+                            //recyclerView.smoothScrollToPosition(msg.arg2);
                         //Log.d("news init", "init: at (0)");
                     }
                 }
@@ -180,6 +190,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             public void onClick(final View v) {
                 Intent intent_search = new Intent(fragmentActivity, SearchActivity.class);
                 intent_search.putExtra("Caller","News");
+                intent_search.putExtra("channel",selectedChannel);
                 startActivityForResult(intent_search,NEWSPAESEARCHREQUEST);
             }
         });
@@ -251,7 +262,9 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         Intent intent;
         intent = new Intent(this.getActivity(), DetailNewsActivity.class);
         intent.putExtra("news",currentNewsList.get(position));
-        startActivity(intent);
+        intent.putExtra("in_search",false);
+        intent.putExtra("news_position", position);
+        startActivityForResult(intent, DETAILNEWSREQUEST);
     }
 
 
@@ -275,8 +288,11 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                         });
                     }
                     else{
-                        Toast toast_isupdated = Toast.makeText(getContext(), "已经是最新的啦~", Toast.LENGTH_SHORT);
-                        toast_isupdated.show();
+                        Message msg = new Message();
+                        msg.obj = "Done";
+                        msg.arg1 = -2;
+                        msg.arg2 = 0;
+                        handler.sendMessage(msg);
                     }
                 });
             }
@@ -285,12 +301,13 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
-                manager.getNews(selectedChannel, 20, null, (newsList) -> {
+                int original_length = currentNewsList.size();
+                manager.getNews(selectedChannel, 20, currentNewsList.get(original_length-1)._id, (newsList) -> {
+                    currentNewsList.addAll(newsList);
                     Message msg = new Message();
                     msg.obj = "Done";
                     msg.arg1 = -1;
-                    msg.arg2 = currentNewsList.size();
-                    currentNewsList.addAll(newsList);
+                    msg.arg2 = original_length;
                     handler.sendMessage(msg);
                 });
             }
@@ -351,15 +368,13 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                 }
                 break;
             case NEWSPAESEARCHREQUEST:
-                if(resultCode == NEWSPAESEARCHRESULT) {
-                    //setTopView();
-                    //Log.d("search_key", "onActivityResult: "+search_key);
-                    manager.searchNews(search_key,selectedChannel,20,null,(newsList)->{
-                        currentNewsList = newsList;
-                        Message msg = new Message();
-                        msg.obj = "Done";
-                        handler.sendMessage(msg);
-                    });
+                break;
+            case DETAILNEWSREQUEST:
+                int position = data.getIntExtra("position",-1);
+                boolean liked = data.getBooleanExtra("liked",false);
+                if(position!=-1 && currentNewsList.get(position).liked!=liked){
+                    manager.likeNews(currentNewsList.get(position),liked);
+                    adapter.notifyItemChanged(position);
                 }
                 break;
         }

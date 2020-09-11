@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.java.raocongyuan.backend.DataManager;
 import com.java.raocongyuan.backend.data.Expert;
@@ -106,6 +107,10 @@ public class ExpertsFragment extends Fragment implements ExpertListAdapter.OnMen
             public void handleMessage(Message msg){
                 if(msg.obj instanceof String){
                     if(msg.obj.equals("Done")){
+                        if(expertList==null || expertList.size()==0){
+                            Toast toast = Toast.makeText(getContext(),"当前网络不畅，(⊙x⊙;)您真的联网了吗 orz",Toast.LENGTH_LONG);
+                            toast.show();
+                        }
                         adapter.updateExpert(expertList);
                         adapter.notifyDataSetChanged();
                         //Log.d("expert init", "init: notified"+ adapter.getItemCount());
