@@ -125,18 +125,11 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
         };
 
         searchView = (SearchView)view.findViewById(R.id.search_entity);
-        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
-                    relativeLayout.setBackground(getResources().getDrawable(R.drawable.textview_white_background));
-            }
-        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 search_key = searchView.getQuery().toString();
-                Log.d("======= onQueryTextSubmit ====== search_key = ",search_key);
+                //Log.d("======= onQueryTextSubmit ====== search_key = ",search_key);
                 //TODO::backend::give the "search_key" and return all the entities whose name includes the search key
                 currentEntityList.clear();
                 //Log.d("after search1, ",currentEntityList.size()+" "+adapter.getItemCount());
@@ -173,7 +166,7 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                relativeLayout.setBackground(getResources().getDrawable(R.drawable.textview_white_background));
+                //relativeLayout.setBackground(getResources().getDrawable(R.drawable.textview_white_background));
             }
         });
 
