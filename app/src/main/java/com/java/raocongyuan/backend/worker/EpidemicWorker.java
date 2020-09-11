@@ -81,8 +81,7 @@ public class EpidemicWorker extends Worker {
         }).sorted((a, b) -> b.confirmed.get(b.days - 1) - a.confirmed.get(a.days - 1)).collect(Collectors.toList());
         international = result.entrySet().stream().filter(e -> e.getKey().split("\\|").length == 1 && !e.getKey().equals("World")).map(e -> {
             Epidemic epidemic = DataToEpidemic(e.getValue());
-            epidemic.country = e.getKey();
-
+            epidemic.country = simpleNameMap.getOrDefault(e.getKey(), e.getKey());
             return epidemic;
         }).sorted((a, b) -> b.confirmed.get(b.days - 1) - a.confirmed.get(a.days - 1)).collect(Collectors.toList());
     }
