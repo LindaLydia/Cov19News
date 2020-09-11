@@ -14,6 +14,12 @@ import com.java.raocongyuan.backend.DataManager;
 import com.java.raocongyuan.backend.data.News;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 public class DetailNewsActivity extends AppCompatActivity {
 
     private TextView txtTitle;
@@ -54,7 +60,8 @@ public class DetailNewsActivity extends AppCompatActivity {
         if(newsItem.date.equals(""))
             date_and_time = newsItem.time;
         else
-            date_and_time = newsItem.date + " " + newsItem.time;
+            date_and_time = LocalDateTime.parse(newsItem.date, DateTimeFormatter.RFC_1123_DATE_TIME).atOffset(ZoneOffset.UTC).
+                    atZoneSameInstant(ZoneId.systemDefault()).format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
         item_date_time.setText(date_and_time);
         //String text_content = "\t"+newsItem.content.replace("\n","\n\t");
         String text_content = newsItem.content;

@@ -15,6 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.java.raocongyuan.backend.data.News;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 
 public class ClassificationAdapter extends RecyclerView.Adapter<ClassificationAdapter.ClassificationViewHolder> {
@@ -75,8 +80,10 @@ public class ClassificationAdapter extends RecyclerView.Adapter<ClassificationAd
         holder.txtAbstract.setText(event.title.replace((char)12288+"",""));
 
         //Date and Time
-        if(event.date!=null)
-            holder.item_date_time.setText(event.date);
+        if(event.time!=null)
+            //holder.item_date_time.setText(LocalDateTime.parse(event.date, DateTimeFormatter.RFC_1123_DATE_TIME).atOffset(ZoneOffset.UTC).
+            //       atZoneSameInstant(ZoneId.systemDefault()).format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
+            holder.item_date_time.setText(event.time);
         else
             holder.item_date_time.setVisibility(View.GONE);
 

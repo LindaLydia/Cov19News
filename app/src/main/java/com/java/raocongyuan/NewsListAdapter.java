@@ -22,6 +22,12 @@ import com.java.raocongyuan.backend.data.News;
 import com.sackcentury.shinebuttonlib.ShineButton;
 import com.bumptech.glide.Glide;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -117,7 +123,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
         //Date and Time
         if(newsItem.date!=null)
-            holder.item_date_time.setText(newsItem.date);
+            holder.item_date_time.setText(LocalDateTime.parse(newsItem.date, DateTimeFormatter.RFC_1123_DATE_TIME).atOffset(ZoneOffset.UTC).
+                    atZoneSameInstant(ZoneId.systemDefault()).format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
         else
             holder.item_date_time.setVisibility(View.GONE);
 
