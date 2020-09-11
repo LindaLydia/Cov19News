@@ -90,7 +90,7 @@ public class EpidemicWorker extends Worker {
     public void run() {
         final String TAG = "Epidemic";
         while (true) {
-            // Sleep or wait for notify
+            boolean networkError = false;
             synchronized (this) {
                 long start = System.currentTimeMillis();
                 try {
@@ -108,10 +108,11 @@ public class EpidemicWorker extends Worker {
                     long stop = System.currentTimeMillis();
                     Log.d(TAG, "run: Cost " + (stop - start) + " ms");
                 } catch (IOException | JsonIOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    networkError = true;
                 }
                 try {
-                    this.wait(5 * 60 * 1000);
+                    this.wait(networkError? 3 * 1000: 5 * 60 * 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
