@@ -140,7 +140,7 @@ public class NewsWorker extends Worker {
                                     Log.d(TAG, "run: Meet existing fragment");
                                     if(!init)
                                         break;
-                                    delta = delta < 500?2*delta: 1000;
+                                    delta = delta < 50 ? 2 * delta: 100;
                                     page += delta;
                                     continue;
                                 }
