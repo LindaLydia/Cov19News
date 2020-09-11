@@ -158,9 +158,6 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                         if(msg.arg1!=-1) {
                             viewPager.setCurrentItem(msg.arg1);
                         }
-                        //else
-                            //recyclerView.smoothScrollToPosition(msg.arg2);
-                        //Log.d("news init", "init: at (0)");
                     }
                 }
             }
