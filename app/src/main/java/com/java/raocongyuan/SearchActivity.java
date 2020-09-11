@@ -65,10 +65,14 @@ public class SearchActivity extends AppCompatActivity implements NewsListAdapter
                         if(msg.arg1==0)
                             adapter.notifyDataSetChanged();
                         else if(msg.arg1==-1)
-                            adapter.notifyItemRangeChanged(msg.arg2,20);
+                            adapter.notifyItemRangeChanged(msg.arg2,currentNewsList.size()-msg.arg2);
                         else if(msg.arg1==-2){
                             Toast toast_isupdated = Toast.makeText(SearchActivity.this, "已经是最新的啦~", Toast.LENGTH_SHORT);
                             toast_isupdated.show();
+                        }
+                        else if(msg.arg1==-3){
+                            Toast toast_more = Toast.makeText(SearchActivity.this, "没有更多啦~", Toast.LENGTH_SHORT);
+                            toast_more.show();
                         }
                     }
                 }
@@ -145,15 +149,24 @@ public class SearchActivity extends AppCompatActivity implements NewsListAdapter
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
-                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+                refreshlayout.finishLoadMore(500/*,false*/);//传入false表示加载失败
                 int original_length = currentNewsList.size();
                 manager.searchNews(NewsListFragment.search_key, selectedChannel, 20, currentNewsList.get(original_length-1)._id, (newsList) -> {
-                    currentNewsList.addAll(newsList);
-                    Message msg = new Message();
-                    msg.obj = "Done";
-                    msg.arg1 = -1;
-                    msg.arg2 = original_length;
-                    handler.sendMessage(msg);
+                    if(newsList.size()>0){
+                        currentNewsList.addAll(newsList);
+                        Message msg = new Message();
+                        msg.obj = "Done";
+                        msg.arg1 = -1;
+                        msg.arg2 = original_length;
+                        handler.sendMessage(msg);
+                    }
+                    else{
+                        Message msg = new Message();
+                        msg.obj = "Done";
+                        msg.arg1 = -3;
+                        msg.arg2 = original_length;
+                        handler.sendMessage(msg);
+                    }
                 });
             }
         });

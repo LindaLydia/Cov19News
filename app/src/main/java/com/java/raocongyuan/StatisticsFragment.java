@@ -158,10 +158,10 @@ public class StatisticsFragment extends Fragment {
             }
         };
 
-        manager.getDomestic(25,(domestic_data) -> {
+        manager.getDomestic(20,(domestic_data) -> {
             Log.d("into get data", "onCreateView: ");
             domestic_epidemic = domestic_data;
-            manager.getInternational(25,(international_data) -> {
+            manager.getInternational(20,(international_data) -> {
                 international_epidemic = international_data;
                 Message msg = new Message();
                 msg.obj = "Done";
@@ -178,11 +178,41 @@ public class StatisticsFragment extends Fragment {
                 toggleButton.setChecked(isChecked);
                 isInternational = isChecked;
                 if (isInternational) {
-                    SetBarChart(international_epidemic, isInternational);
-                    SetLineChart(isInternational, 0);
+                    if(international_epidemic==null || international_epidemic.size()==0){
+                        manager.getDomestic(20,(domestic_data) -> {
+                            Log.d("into get data", "onCreateView: ");
+                            domestic_epidemic = domestic_data;
+                            manager.getInternational(20,(international_data) -> {
+                                international_epidemic = international_data;
+                                Message msg = new Message();
+                                msg.obj = "Done";
+                                handler.sendMessage(msg);
+                                //Log.d("in call back", domestic_epidemic.toString()+"---"+international_epidemic.toString());
+                            });
+                        });
+                    }
+                    else{
+                        SetBarChart(international_epidemic, isInternational);
+                        SetLineChart(isInternational, 0);
+                    }
                 } else {
-                    SetBarChart(domestic_epidemic, isInternational);
-                    SetLineChart(isInternational, 0);
+                    if(domestic_epidemic==null || domestic_epidemic.size()==0){
+                        manager.getDomestic(20,(domestic_data) -> {
+                            Log.d("into get data", "onCreateView: ");
+                            domestic_epidemic = domestic_data;
+                            manager.getInternational(20,(international_data) -> {
+                                international_epidemic = international_data;
+                                Message msg = new Message();
+                                msg.obj = "Done";
+                                handler.sendMessage(msg);
+                                //Log.d("in call back", domestic_epidemic.toString()+"---"+international_epidemic.toString());
+                            });
+                        });
+                    }
+                    else {
+                        SetBarChart(domestic_epidemic, isInternational);
+                        SetLineChart(isInternational, 0);
+                    }
                 }
             }
 
@@ -200,7 +230,10 @@ public class StatisticsFragment extends Fragment {
         initChart();
 
         //initialize the data
-        SetBarChart(domestic_epidemic, isInternational);
+        if(isInternational)
+            SetBarChart(international_epidemic, isInternational);
+        else
+            SetBarChart(domestic_epidemic, isInternational);
         SetLineChart(isInternational,0);
 
         //bar_chart listener ---- for line chart

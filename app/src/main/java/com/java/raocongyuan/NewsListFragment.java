@@ -146,9 +146,13 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                             adapter.notifyDataSetChanged();
                         else if(msg.arg1==-1)
                             adapter.notifyItemRangeChanged(msg.arg2,20);
-                        else{
+                        else if(msg.arg1==-2){
                             Toast toast_isupdated = Toast.makeText(getActivity(), "已经是最新的啦~", Toast.LENGTH_SHORT);
                             toast_isupdated.show();
+                        }
+                        else if(msg.arg1==-3){
+                            Toast toast_more = Toast.makeText(getActivity(), "没有更多啦~", Toast.LENGTH_SHORT);
+                            toast_more.show();
                         }
                         //Log.d("notify", "setTopView: " + adapter.getItemCount());
                         if(msg.arg1!=-1) {
@@ -300,15 +304,25 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
-                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+                refreshlayout.finishLoadMore(500/*,false*/);//传入false表示加载失败
                 int original_length = currentNewsList.size();
                 manager.getNews(selectedChannel, 20, currentNewsList.get(original_length-1)._id, (newsList) -> {
-                    currentNewsList.addAll(newsList);
-                    Message msg = new Message();
-                    msg.obj = "Done";
-                    msg.arg1 = -1;
-                    msg.arg2 = original_length;
-                    handler.sendMessage(msg);
+                    if(newsList.size()>0) {
+                        currentNewsList.addAll(newsList);
+                        Message msg = new Message();
+                        msg.obj = "Done";
+                        msg.arg1 = -1;
+                        msg.arg2 = original_length;
+                        handler.sendMessage(msg);
+                    }
+                    else{
+                        currentNewsList.addAll(newsList);
+                        Message msg = new Message();
+                        msg.obj = "Done";
+                        msg.arg1 = -3;
+                        msg.arg2 = original_length;
+                        handler.sendMessage(msg);
+                    }
                 });
             }
         });

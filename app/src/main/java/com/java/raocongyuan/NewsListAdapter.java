@@ -103,7 +103,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         final News newsItem = newsItems.get(position);
         //System.out.println(newsItem+"\n\n");
 
-        holder.txtTitle.setText(newsItem.title.replace((char)12288+"",""));
+        holder.txtTitle.setText(newsItem.title_preview.replace((char)12288+"",""));
         holder.txtAbstract.setText(newsItem.preview.replace((char)12288+"",""));
 
         //Is-read set
