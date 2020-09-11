@@ -213,6 +213,25 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.En
         }
 
         //parent
+        holder.imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(entity.Expended_first()){
+                    //next State
+                    holder.isExpanded = false;
+                    rotationExpandIcon(45, 0, holder);
+                    holder.relativeLayout.setVisibility(View.GONE);
+                }
+                else{
+                    //next State
+                    holder.isExpanded = true;
+                    rotationExpandIcon(0, 45, holder);
+                    holder.relativeLayout.setVisibility(View.VISIBLE);
+                }
+                entity.ExpendChange_first();//now, isExpended == entity.isExpend_first
+                notifyItemChanged(position);
+            }
+        });
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,6 +252,25 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.En
             }
         });
         //son
+        holder.imageButton_relations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(entity.Expended_relations()){
+                    //next State
+                    holder.isExpanded_relations = false;
+                    rotationExpandIcon_relations(45, 0, holder);;
+                    holder.relativeLayout_relations.setVisibility(View.GONE);
+                }
+                else{
+                    //next State
+                    holder.isExpanded_relations = true;
+                    rotationExpandIcon_relations(0, 45, holder);
+                    holder.relativeLayout_relations.setVisibility(View.VISIBLE);
+                }
+                entity.ExpendChange_relations();//now, isExpended_relations == entity.isExpend_relations
+                notifyItemChanged(position);
+            }
+        });
         holder.linearLayout_relations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -249,6 +287,25 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.En
                      holder.relativeLayout_relations.setVisibility(View.VISIBLE);
                 }
                 entity.ExpendChange_relations();//now, isExpended_relations == entity.isExpend_relations
+                notifyItemChanged(position);
+            }
+        });
+        holder.imageButton_properties.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(entity.Expended_properties()){
+                    //next State
+                    holder.isExpanded_properties = false;
+                    rotationExpandIcon_properties(45, 0, holder);;
+                    holder.relativeLayout_properties.setVisibility(View.GONE);
+                }
+                else{
+                    //next State
+                    holder.isExpanded_properties = true;
+                    rotationExpandIcon_properties(0, 45, holder);
+                    holder.relativeLayout_properties.setVisibility(View.VISIBLE);
+                }
+                entity.ExpendChange_properties();//now, isExpended_properties == entity.isExpend_properties
                 notifyItemChanged(position);
             }
         });
