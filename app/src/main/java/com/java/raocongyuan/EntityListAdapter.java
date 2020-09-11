@@ -138,14 +138,14 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.En
             holder.relativeLayout.setVisibility(View.GONE);
         }
         //son
-        if(entity.getDefinition()!=null)
+        if(entity.getDefinition()!=null && !entity.getDefinition().equals(""))
             holder.textView_definition.setText(entity.getDefinition());
         else
             holder.textView_definition.setText("暂时没有定义。");
         if(entity.getPicture()!=null)
             Glide.with(activity).load(entity.getPicture()).into(holder.imageView);
         else
-            holder.imageView.setVisibility(View.GONE);
+            holder.imageView.setVisibility(View.INVISIBLE);
         if(entity.Expended_relations()){
             //current State
             holder.isExpanded_relations = true;
@@ -236,7 +236,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.En
         holder.linearLayout_relations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(entity.Expended_first()){
+                if(entity.Expended_relations()){
                     //next State
                     holder.isExpanded_relations = false;
                     rotationExpandIcon_relations(45, 0, holder);;
@@ -255,7 +255,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.En
         holder.linearLayout_properties.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(entity.Expended_first()){
+                if(entity.Expended_properties()){
                     //next State
                     holder.isExpanded_properties = false;
                     rotationExpandIcon_properties(45, 0, holder);;

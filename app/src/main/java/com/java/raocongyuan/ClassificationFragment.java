@@ -123,16 +123,14 @@ public class ClassificationFragment extends Fragment implements ClassificationAd
     private void init(){
         manager.getNews("event",100,null,(event_list)->{
             currentEventList = event_list;
+            Message msg = new Message();
+            msg.obj = "Done";
+            handler.sendMessage(msg);
         });
     }
 
     @Override
     public void onMenuItemClick(int position) {
-//        Log.d("position", letterList[position]);
-        // currentNewsList.get(position).setRead();
-        Intent intent;
-        intent = new Intent(this.getActivity(), DetailNewsActivity.class);
-        intent.putExtra("news",currentEventList.get(position));
-        startActivity(intent);
+        //do nothing
     }
 }
