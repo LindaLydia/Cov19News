@@ -116,9 +116,11 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         //TODO::front::bug here
         if(newsItem.read) {
             holder.txtTitle.setTextColor(ContextCompat.getColor(holder.txtTitle.getContext(), R.color.titleItemSelColor));
+            holder.txtAbstract.setTextColor(ContextCompat.getColor(holder.txtAbstract.getContext(),R.color.btnItemColor));
         }
         else {
             holder.txtTitle.setTextColor(ContextCompat.getColor(holder.txtTitle.getContext(), R.color.titleItemUnselColor));
+            holder.txtAbstract.setTextColor(ContextCompat.getColor(holder.txtAbstract.getContext(),R.color.abstractItemUnselColor));
         }
 
         //Date and Time
@@ -157,7 +159,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
                 share_intent.setAction(Intent.ACTION_SEND);
                 share_intent.setType("text/plain");
                 share_intent.putExtra(Intent.EXTRA_SUBJECT,"Share");
-                share_intent.putExtra(Intent.EXTRA_TEXT,"Shared from Covid19News : "+newsItem.title);
+                share_intent.putExtra(Intent.EXTRA_TEXT,"Share from Covid19:\nTitle: "+newsItem.title+ "\nAbstract: "+newsItem.preview);
                 share_intent = Intent.createChooser(share_intent,"SHARE");
                 activity.startActivity(share_intent);
             }

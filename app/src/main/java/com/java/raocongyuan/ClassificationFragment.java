@@ -164,6 +164,8 @@ public class ClassificationFragment extends Fragment implements ClassificationAd
             public void onLoadMore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(500/*,false*/);//传入false表示加载失败
                 int original_length = currentEventList.size();
+                if(original_length <= 0)
+                    return;
                 //System.out.println(original_length+" check if is null in loadMore------------"+currentEventList.get(original_length-1)._id);
                 manager.getNews("event", 20, currentEventList.get(original_length-1)._id, (newsList) -> {
                     if(newsList.size()>0) {

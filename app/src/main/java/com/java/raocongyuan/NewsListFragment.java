@@ -74,7 +74,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
     private HorizontalScrollView hsv;
     private ViewPager viewPager;
     private List<String> choices;//channel choices
-    private String selectedChannel;
+    private String selectedChannel = "all";
 
     private ImageView button_more_columns;
     private TextView search_text;
@@ -163,21 +163,25 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             }
         };
 
+        Toast toast = Toast.makeText(getContext(),"努力加载中٩( •̀㉨•́ )و ，请稍后~",Toast.LENGTH_LONG);
+        toast.show();
+
         //always loading data before until it's not null
         CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> {
-            while(true) {
-                if(currentNewsList!=null){
-                    Message msg = new Message();
-                    msg.obj = "Done";
-                    handler.sendMessage(msg);
-                    break;
-                }
+            boolean flag = true;
+            while((currentNewsList==null||currentNewsList.size()==0)) {
+                manager.getNews(selectedChannel,20,null,(newsList)->{
+                    currentNewsList = newsList;
+                });
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            Message msg = new Message();
+            msg.obj = "Done";
+            handler.sendMessage(msg);
         });
         cf.exceptionally((e) -> {
             e.printStackTrace();
@@ -200,8 +204,6 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
         hsv = (HorizontalScrollView) view.findViewById(R.id.news_scroll);
         viewPager = (ViewPager) view.findViewById(R.id.news_view_pager);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                //TODO::backend::get news by sort, and present them
-                //TODO::front::present the returned news
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int position) {
                     viewPager.setCurrentItem(position);
@@ -289,6 +291,7 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
                         });
                     }
                     else{
+                        System.out.println("is latest");
                         Message msg = new Message();
                         msg.obj = "Done";
                         msg.arg1 = -2;
@@ -303,6 +306,8 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
             public void onLoadMore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(500/*,false*/);//传入false表示加载失败
                 int original_length = currentNewsList.size();
+                if(original_length<=0)
+                    return;
                 manager.getNews(selectedChannel, 20, currentNewsList.get(original_length-1)._id, (newsList) -> {
                     if(newsList.size()>0) {
                         currentNewsList.addAll(newsList);

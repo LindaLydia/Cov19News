@@ -22,9 +22,11 @@
         </SearchView>
 
         <RelativeLayout
+            android:id="@+id/entity_relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@drawable/entity_background">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/entity_recyclerView"

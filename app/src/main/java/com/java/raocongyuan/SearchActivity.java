@@ -131,19 +131,12 @@ public class SearchActivity extends AppCompatActivity implements NewsListAdapter
 
     private void initSmartRefresh(View view){
         RefreshLayout refreshLayout = (RefreshLayout)view.findViewById(R.id.refreshLayout);
-        refreshLayout.setRefreshHeader(new ClassicsHeader(this));
+        //refreshLayout.setRefreshHeader(new ClassicsHeader(this));
         refreshLayout.setRefreshFooter(new ClassicsFooter(this));
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
-                manager.updateNews(selectedChannel,(isUpdated)->{
-                    Message msg = new Message();
-                    msg.obj = "Done";
-                    msg.arg1 = -2;
-                    msg.arg2 = 0;
-                    handler.sendMessage(msg);
-                });
+                //do nothing
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -151,6 +144,8 @@ public class SearchActivity extends AppCompatActivity implements NewsListAdapter
             public void onLoadMore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(500/*,false*/);//传入false表示加载失败
                 int original_length = currentNewsList.size();
+                if(original_length <= 0)
+                    return;
                 manager.searchNews(NewsListFragment.search_key, selectedChannel, 20, currentNewsList.get(original_length-1)._id, (newsList) -> {
                     if(newsList.size()>0){
                         currentNewsList.addAll(newsList);

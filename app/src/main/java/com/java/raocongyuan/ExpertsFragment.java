@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 /**
@@ -114,13 +115,38 @@ public class ExpertsFragment extends Fragment implements ExpertListAdapter.OnMen
                         adapter.updateExpert(expertList);
                         adapter.notifyDataSetChanged();
                         //Log.d("expert init", "init: notified"+ adapter.getItemCount());
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(adapter);
+                        //recyclerView.setLayoutManager(layoutManager);
+                        //recyclerView.setAdapter(adapter);
                         Log.d("expert init", "init: set adapter");
                     }
                 }
             }
         };
+
+        //always loading data before until it's not null
+        CompletableFuture<Void> cf = CompletableFuture.runAsync(() -> {
+            boolean flag = true;
+            while((expertList==null||expertList.size()==0)) {
+                manager.getExperts(false, (e) -> {
+                    expertList = e;
+                    Message msg = new Message();
+                    msg.obj = "Done";
+                    handler.sendMessage(msg);
+                });
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Message msg = new Message();
+            msg.obj = "Done";
+            handler.sendMessage(msg);
+        });
+        cf.exceptionally((e) -> {
+            e.printStackTrace();
+            return null;
+        });
 
         adapter = new ExpertListAdapter(getExpertList(), this.getActivity(), this.getFragmentManager(), this);
         layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false);

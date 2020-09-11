@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -42,6 +45,7 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
     private String search_key;
 
     private SearchView searchView;
+    private RelativeLayout relativeLayout;
     private RecyclerView recyclerView;
     private EntityListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -95,6 +99,8 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
         // Inflate the layout for this fragment
         this.inflater = inflater;
         this.view = inflater.inflate(R.layout.fragment_graph, container, false);
+        //Objects.requireNonNull(this.getActivity()).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        this.relativeLayout = view.findViewById(R.id.entity_relativeLayout);
 
         handler = new Handler(){
             @Override
@@ -119,6 +125,13 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
         };
 
         searchView = (SearchView)view.findViewById(R.id.search_entity);
+        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus)
+                    relativeLayout.setBackground(getResources().getDrawable(R.drawable.textview_white_background));
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -160,7 +173,7 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                relativeLayout.setBackground(getResources().getDrawable(R.drawable.textview_white_background));
             }
         });
 

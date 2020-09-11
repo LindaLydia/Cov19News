@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 graphText.setTextColor(Color.BLACK);
                 classificationText.setTextColor(Color.BLACK);
                 expertText.setTextColor(Color.BLACK);
-                viewPager.setCurrentItem(0);
+                viewPager.setCurrentItem(0,false);
             }
         });
         statisticsText.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 graphText.setTextColor(Color.BLACK);
                 classificationText.setTextColor(Color.BLACK);
                 expertText.setTextColor(Color.BLACK);
-                viewPager.setCurrentItem(1);
+                viewPager.setCurrentItem(1,false);
             }
         });
         graphText.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 graphText.setTextColor(Color.BLUE);
                 classificationText.setTextColor(Color.BLACK);
                 expertText.setTextColor(Color.BLACK);
-                viewPager.setCurrentItem(2);
+                viewPager.setCurrentItem(2,false);
             }
         });
         classificationText.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 graphText.setTextColor(Color.BLACK);
                 classificationText.setTextColor(Color.BLUE);
                 expertText.setTextColor(Color.BLACK);
-                viewPager.setCurrentItem(3);
+                viewPager.setCurrentItem(3,false);
             }
         });
         expertText.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 graphText.setTextColor(Color.BLACK);
                 classificationText.setTextColor(Color.BLACK);
                 expertText.setTextColor(Color.BLUE);
-                viewPager.setCurrentItem(4);
+                viewPager.setCurrentItem(4,false);
             }
         });
 
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrolled(int a0, float a1, int a2) {
                 //get the instance of tabLine (in UI)
                 LinearLayout.LayoutParams ll = (android.widget.LinearLayout.LayoutParams) tabLine.getLayoutParams();
-                if (currentPage>=0 && currentPage < (TOTAL_PAGE_COUNT-1) && currentPage == a0) { // page(n-1)->page(n), n<=TOTAL_PAGE_COUNT-1
+                if (currentPage>=0 && currentPage < (TOTAL_PAGE_COUNT) && currentPage == a0) { // page(n-1)->page(n), n<=TOTAL_PAGE_COUNT-1
                     ll.leftMargin = (int) (currentPage * tabLineWidth + a1 * tabLineWidth);
                 } else if (currentPage>=1 && currentPage < TOTAL_PAGE_COUNT && currentPage == a0 + 1) { // page(n)->page(n-1), n<=TOTAL_PAGE_COUNT-1
                     ll.leftMargin = (int) (currentPage * tabLineWidth - (1 - a1) * tabLineWidth);
@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrollStateChanged(int arg0){
                 //TODO: auto-generated method stub
+
             }
         });
     }
