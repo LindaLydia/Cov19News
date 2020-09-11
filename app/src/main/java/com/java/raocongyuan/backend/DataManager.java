@@ -58,7 +58,6 @@ public class DataManager {
             try {
                 return f.call().subList(0, number);
             } catch (Exception e) {
-                e.printStackTrace();
                 return null;
             }
         });
