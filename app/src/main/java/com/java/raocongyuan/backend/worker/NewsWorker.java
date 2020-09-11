@@ -22,8 +22,10 @@ import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class NewsWorker extends Worker {
@@ -50,8 +52,15 @@ public class NewsWorker extends Worker {
             News news = gson.fromJson(json, News.class);
             news.liked = false;
             news.read = false;
-            news.preview = "";
+            int title_preview_length = StandardCharsets.US_ASCII.newEncoder().canEncode(news.title)? 45: 30;
+            int preview_length = StandardCharsets.US_ASCII.newEncoder().canEncode(news.content)? 60: 40;
+            news.title_preview = compress(news.title, title_preview_length);
+            news.preview = compress(news.content, preview_length);
             return news;
+        }
+
+        private String compress(String s, int length) {
+            return s.length() > length? s.substring(0, length) + "...": s;
         }
     }
 
@@ -94,18 +103,18 @@ public class NewsWorker extends Worker {
             int page = 1;
             int total = 1;
             String oldestId = DataManager.maxId;
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(News.class, new NewsDeserializer());
             synchronized (this) {
                 try {
                     long start = System.currentTimeMillis();
                     while (count < total) {
                         @SuppressLint("DefaultLocale") URL url = new URL(String.format(api, type, page, size));
                         Log.d(TAG, "page: " + page + " started");
-                        GsonBuilder gsonBuilder = new GsonBuilder();
-                        gsonBuilder.registerTypeAdapter(News.class, new NewsDeserializer());
                         try {
                             URLConnection connection = url.openConnection();
-                            connection.setConnectTimeout(2000);
-                            connection.setReadTimeout(2000);
+                            connection.setConnectTimeout(3000);
+                            connection.setReadTimeout(3000);
                             try (Reader stream = new InputStreamReader(connection.getInputStream())) {
                                 Response result = gsonBuilder.create().fromJson(stream, Response.class);
                                 if (result.data.isEmpty()) {
@@ -122,15 +131,17 @@ public class NewsWorker extends Worker {
                                     Log.d(TAG, "run: Fast Forward to " + page);
                                     continue;
                                 }
-                                String firstId = result.data.get(0)._id;
+                                String finalOldestId = oldestId;
+                                List<News> data = result.data.stream().filter((e) -> e._id.compareTo(finalOldestId) < 0).collect(Collectors.toList());
+                                String firstId = data.get(0)._id;
                                 String existId = manager.getNewestBefore(firstId, type);
                                 if (firstId.compareTo(existId) <= 0) {
                                     Log.d(TAG, "run: Meet existing fragment");
                                     break;
                                 }
-                                manager.addNews(result.data.subList(total - lastTotal, result.data.size()).stream().filter((news) ->
-                                        existId.compareTo(news._id) < 0 && news._id.compareTo(oldestId) < 0).toArray(News[]::new));
-                                count += result.data.size();
+                                oldestId = data.get(data.size() - 1)._id;
+                                manager.addNews(data.stream().filter((news) -> existId.compareTo(news._id) < 0).toArray(News[]::new));
+                                count += data.size();
                                 lastTotal = total;
                                 page += 1;
                                 if(!init) {
