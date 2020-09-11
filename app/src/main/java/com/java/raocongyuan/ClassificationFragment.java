@@ -14,9 +14,15 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.java.raocongyuan.backend.DataManager;
 import com.java.raocongyuan.backend.data.News;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,12 +102,14 @@ public class ClassificationFragment extends Fragment implements ClassificationAd
                 if(msg.obj instanceof String){
                     if(msg.obj.equals("Done")){
                         adapter.renewEventList(currentEventList);
-                        adapter.notifyDataSetChanged();
-                        //Log.d("notify", "setTopView: " + adapter.getItemCount());
-                        recyclerView.setAdapter(adapter);
-                        //if(msg.arg1!=-1)
-                            //viewPager.setCurrentItem(msg.arg1);
-                        //Log.d("news init", "init: at (0)");
+                        if(msg.arg1==0)
+                            adapter.notifyDataSetChanged();
+                        else if(msg.arg1==-1)
+                            adapter.notifyItemRangeChanged(msg.arg2,currentEventList.size()-msg.arg2);
+                        else if(msg.arg1==-3){
+                            Toast toast_more = Toast.makeText(getActivity(), "没有更多啦~", Toast.LENGTH_SHORT);
+                            toast_more.show();
+                        }
                     }
                 }
             }
@@ -111,6 +119,7 @@ public class ClassificationFragment extends Fragment implements ClassificationAd
         layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView = (RecyclerView)view.findViewById(R.id.classification_recyclerView);
 
+        initSmartRefresh(view);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
         return view;
@@ -121,10 +130,11 @@ public class ClassificationFragment extends Fragment implements ClassificationAd
     }
 
     private void init(){
-        manager.getNews("event",100,null,(event_list)->{
+        manager.getNews("event",20,null,(event_list)->{
             currentEventList = event_list;
             Message msg = new Message();
             msg.obj = "Done";
+            msg.arg1 = 0;
             handler.sendMessage(msg);
         });
     }
@@ -133,4 +143,48 @@ public class ClassificationFragment extends Fragment implements ClassificationAd
     public void onMenuItemClick(int position) {
         //do nothing
     }
+
+    private void initSmartRefresh(View view){
+        RefreshLayout refreshLayout = (RefreshLayout)view.findViewById(R.id.refreshLayout);
+        //refreshLayout.setRefreshHeader(new ClassicsHeader(getActivity()));
+        refreshLayout.setRefreshFooter(new ClassicsFooter(getActivity()));
+        /*
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(1);//传入false表示刷新失败
+                int original_length = currentEventList.size();
+                System.out.println(original_length+" check if is null in refresh------------"+currentEventList.get(original_length-1)._id);
+                Toast toast_isupdated = Toast.makeText(getActivity(), "已经是最新的啦~", Toast.LENGTH_SHORT);
+                toast_isupdated.show();
+            }
+        });*/
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadMore(500/*,false*/);//传入false表示加载失败
+                int original_length = currentEventList.size();
+                //System.out.println(original_length+" check if is null in loadMore------------"+currentEventList.get(original_length-1)._id);
+                manager.getNews("event", 20, currentEventList.get(original_length-1)._id, (newsList) -> {
+                    if(newsList.size()>0) {
+                        currentEventList.addAll(newsList);
+                        Message msg = new Message();
+                        msg.obj = "Done";
+                        msg.arg1 = -1;
+                        msg.arg2 = original_length;
+                        handler.sendMessage(msg);
+                    }
+                    else{
+                        currentEventList.addAll(newsList);
+                        Message msg = new Message();
+                        msg.obj = "Done";
+                        msg.arg1 = -3;
+                        msg.arg2 = original_length;
+                        handler.sendMessage(msg);
+                    }
+                });
+            }
+        });
+    }
+
 }
