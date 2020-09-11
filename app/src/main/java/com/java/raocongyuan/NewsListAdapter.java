@@ -115,7 +115,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         //Is-read set
         //TODO::front::bug here
         if(newsItem.read) {
-            holder.txtTitle.setTextColor(ContextCompat.getColor(holder.txtTitle.getContext(), R.color.titleItemSelColor));
+            holder.txtTitle.setTextColor(ContextCompat.getColor(holder.txtTitle.getContext(), R.color.btnItemColor));
             holder.txtAbstract.setTextColor(ContextCompat.getColor(holder.txtAbstract.getContext(),R.color.btnItemColor));
         }
         else {

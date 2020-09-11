@@ -32,6 +32,7 @@ public class NewsWorker extends Worker {
     final String api = "https://covid-dashboard.aminer.cn/api/events/list?type=%s&page=%d&size=%d";
     String type;
     boolean init;
+    public boolean isRunning = false;
 
     public NewsWorker(DataManager manager, String type, boolean init) {
         super(manager);
@@ -52,15 +53,15 @@ public class NewsWorker extends Worker {
             News news = gson.fromJson(json, News.class);
             news.liked = false;
             news.read = false;
-            int title_preview_length = StandardCharsets.US_ASCII.newEncoder().canEncode(news.title)? 45: 30;
-            int preview_length = StandardCharsets.US_ASCII.newEncoder().canEncode(news.content)? 60: 40;
+            int title_preview_length = StandardCharsets.US_ASCII.newEncoder().canEncode(news.title) ? 45 : 30;
+            int preview_length = StandardCharsets.US_ASCII.newEncoder().canEncode(news.content) ? 60 : 40;
             news.title_preview = compress(news.title, title_preview_length);
             news.preview = compress(news.content, preview_length);
             return news;
         }
 
         private String compress(String s, int length) {
-            return s.length() > length? s.substring(0, length) + "...": s;
+            return s.length() > length ? s.substring(0, length) + "..." : s;
         }
     }
 
@@ -95,19 +96,27 @@ public class NewsWorker extends Worker {
     }
 
     public void run() {
-        while (true) {
-            final String TAG = type;
-            final int size = 100;
-            int count = 0;
-            int lastTotal = 0;
-            int page = 1;
-            int total = 1;
-            int delta = 1;
-            String oldestId = DataManager.maxId;
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(News.class, new NewsDeserializer());
-            synchronized (this) {
+        boolean first = true;
+        isRunning = true;
+        synchronized (this) {
+            while (true) {
+                final String TAG = type;
+                final int size = 100;
+                int count = 0;
+                int lastTotal = 0;
+                int page = 1;
+                int total = 1;
+                int delta = 1;
+                String oldestId = DataManager.maxId;
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(News.class, new NewsDeserializer());
                 try {
+                    if (!first) {
+                        isRunning = false;
+                        this.wait();
+                    } else {
+                        first = false;
+                    }
                     long start = System.currentTimeMillis();
                     while (count < total) {
                         @SuppressLint("DefaultLocale") URL url = new URL(String.format(api, type, page, size));
@@ -138,9 +147,9 @@ public class NewsWorker extends Worker {
                                 String existId = manager.getNewestBefore(firstId, type);
                                 if (firstId.compareTo(existId) <= 0) {
                                     Log.d(TAG, "run: Meet existing fragment");
-                                    if(!init)
+                                    if (!init)
                                         break;
-                                    delta = delta < 50 ? 2 * delta: 100;
+                                    delta = delta < 50 ? 2 * delta : 100;
                                     page += delta;
                                     continue;
                                 }
@@ -150,7 +159,7 @@ public class NewsWorker extends Worker {
                                 count += data.size();
                                 lastTotal = total;
                                 page += 1;
-                                if(!init) {
+                                if (!init) {
                                     synchronized (UpdateLock.class) {
                                         UpdateLock.updated = true;
                                         UpdateLock.class.notifyAll();
@@ -168,17 +177,17 @@ public class NewsWorker extends Worker {
                 } catch (InterruptedException | MalformedURLException e) {
                     e.printStackTrace();
                 }
+                Log.d(TAG, "Done: Worker for " + type + " terminated.");
+                if (init)
+                    break;
             }
-            Log.d(TAG, "Done: Worker for " + type + " terminated.");
-            if (init)
-                break;
-            synchronized (this) {
+            /*synchronized (this) {
                 try {
                     this.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
         }
     }
 

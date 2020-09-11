@@ -109,17 +109,22 @@ public class DataManager {
                         newsWorkers.put(_type, worker);
                         worker.start();
                     } else {
-                        worker.notifyAll();
+                        if(!worker.isRunning)
+                        {
+                            synchronized (worker) {
+                                worker.notify();
+                            }
+                        }
                     }
                 });
                 try {
-                    NewsWorker.UpdateLock.class.wait();
+                    NewsWorker.UpdateLock.class.wait(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
             News newNews = db.newsDao().selectLatest(types);
-            return news.rowid == newNews.rowid;
+            return news.rowid != newNews.rowid;
         });
         cf.thenAccept(callback);
         cf.exceptionally(e -> {
