@@ -102,6 +102,7 @@ public class NewsWorker extends Worker {
             int lastTotal = 0;
             int page = 1;
             int total = 1;
+            int delta = 1;
             String oldestId = DataManager.maxId;
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(News.class, new NewsDeserializer());
@@ -137,8 +138,13 @@ public class NewsWorker extends Worker {
                                 String existId = manager.getNewestBefore(firstId, type);
                                 if (firstId.compareTo(existId) <= 0) {
                                     Log.d(TAG, "run: Meet existing fragment");
-                                    break;
+                                    if(!init)
+                                        break;
+                                    delta = delta < 500?2*delta: 1000;
+                                    page += delta;
+                                    continue;
                                 }
+                                delta = 1;
                                 oldestId = data.get(data.size() - 1)._id;
                                 manager.addNews(data.stream().filter((news) -> existId.compareTo(news._id) < 0).toArray(News[]::new));
                                 count += data.size();
