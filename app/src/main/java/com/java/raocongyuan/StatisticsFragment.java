@@ -141,6 +141,8 @@ public class StatisticsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        if(savedInstanceState != null)
+            return view;
         this.inflater = inflater;
         this.view = inflater.inflate(R.layout.fragment_statistics, container, false);
 

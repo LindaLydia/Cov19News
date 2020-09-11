@@ -98,6 +98,8 @@ public class ExpertsFragment extends Fragment implements ExpertListAdapter.OnMen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        if(savedInstanceState != null)
+            return view;
         this.inflater = inflater;
         this.view = inflater.inflate(R.layout.fragment_experts, container, false);
 

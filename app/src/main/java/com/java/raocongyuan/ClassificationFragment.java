@@ -89,6 +89,8 @@ public class ClassificationFragment extends Fragment implements ClassificationAd
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        if(savedInstanceState != null)
+            return view;
         currentEventList = new ArrayList<News>();
         final Activity fragmentActivity = this.getActivity();
         this.inflater = inflater;

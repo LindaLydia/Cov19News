@@ -129,6 +129,8 @@ public class NewsListFragment extends Fragment implements NewsListAdapter.OnMenu
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //System.out.print("onCreateView() for NewsListView\n");
+        if(savedInstanceState!=null)
+            return view;
         choices = TopMenuChoice.getChoice();
 
         currentNewsList = new ArrayList<News>();

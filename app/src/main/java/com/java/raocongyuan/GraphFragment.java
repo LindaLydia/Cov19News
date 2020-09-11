@@ -95,6 +95,8 @@ public class GraphFragment extends Fragment implements EntityListAdapter.OnMenuI
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(savedInstanceState != null)
+            return view;
         this.currentEntityList = new ArrayList<Entity>();
         // Inflate the layout for this fragment
         this.inflater = inflater;
